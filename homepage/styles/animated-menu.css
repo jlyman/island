@@ -1,0 +1,38 @@
+.animated{
+  font-size: 14pt;
+}
+
+ul.animate{
+margin:0;
+padding:0;
+}
+
+li.animated{
+width:100px;
+height:40px;
+float:left;
+color:#191919;
+text-align:center;
+overflow:hidden;
+padding-top: 10px;
+}
+
+a.animated{
+color:#FFF;
+text-decoration:none;
+}
+
+p.animated{
+padding:0px 5px;
+}
+
+.subtext.animated{
+padding-top:15px;
+}
+
+/*Menu Color Classes*/
+.green.animated{background:#6AA63B;}
+.yellow.animated{background:#FBC700;}
+.red.animated{background:#D52100;}
+.purple.animated{background:#5122B4;}
+.blue.animated{background:#0292C0;}

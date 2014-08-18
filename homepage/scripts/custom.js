@@ -1,0 +1,3 @@
+$(function(){
+  $(".classysocial").ClassySocial();  
+});

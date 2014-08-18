@@ -1,0 +1,107 @@
+## this is the skeleton of all pages on in this app - it defines the basic html tags
+
+## set up a StaticRenderer object to enable the CSS/JS automatic inclusion magic.
+<%! from django_mako_plus.controller import static_files %>
+<%  static_renderer = static_files.StaticRenderer(self) %>
+
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8">
+  <head>
+    
+    <title>Homepage</title>
+    
+    ## add any site-wide scripts or CSS here; for example, jquery:
+    <script src="/static/homepage/scripts/jQuery.js"></script>
+    <script src="/static/homepage/scripts/bootstrap.js"></script>
+    <script src="/static/homepage/scripts/jquery.woomark.js"></script>
+    <script src="/static/homepage/scripts/custom.js"></script>
+    <script src="/static/homepage/scripts/jquery.easing.1.3.js"></script>
+    <script src="/static/homepage/scripts/animated-menu.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/bootstrap-theme.css">
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/dashboard.css">
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/custom.css">
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/animated-menu.css">
+  
+    ## render the css with the same name as this page
+    ${ static_renderer.get_template_css(request, context)  }
+  
+  </head>
+  <body>
+    <div class="col-md-9 top-menu">
+      <header style="background: white; padding: 15px; text-align: left;">
+        <span><img src="/static/homepage/media/image/task/logo.png" height="85px"/></span>
+        <div style="display: inline-block;" >
+          <ul>
+            <li class="animated green">
+              <p><a class="animated"  href="#">Home</a></p>
+              <p class="animated subtext">The front page</p>
+            </li>
+            <li class="animated yellow">
+              <p><a class="animated"  class="animated" href="#">About</a></p>
+              <p class="animated subtext">More info</p>
+            </li>
+              <li class="animated red">
+              <p><a class="animated"  href="#">Contact</a></p>
+              <p class="animated subtext">Get in touch</p>
+            </li>
+            <li class="animated blue">
+              <p><a class="animated"  href="#">Submit</a></p>
+              <p class="animated subtext">Send us your stuff!</p>
+            </li>
+            <li class="animated purple">
+              <p><a class="animated"  href="#">Terms</a></p>
+              <p class="animated subtext">Legal things</p>
+            </li>
+          </ul>
+        </div>
+      </header>
+        <%block name="content">
+          Site content goes here in sub-templates.
+        </%block>  
+    </div>
+
+    <div class="col-md-3 sidebar top-menu">
+      %if request.user.is_authenticated():
+          <header style="height: 115px;">
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                ${request.user.username}
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+                <li role="presentation" class="divider"></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+              </ul>
+            </div>
+          </header>
+      %endif
+      <ul class="nav nav-sidebar">
+        <li><a href="#">Overview</a></li>
+        <li><a href="#">Reports</a></li>
+        <li><a href="#">Analytics</a></li>
+        <li><a href="#">Export</a></li>
+      </ul>
+      <ul class="nav nav-sidebar">
+        <li><a href="">Nav item</a></li>
+        <li><a href="">Nav item again</a></li>
+        <li><a href="">One more nav</a></li>
+        <li><a href="">Another nav item</a></li>
+        <li><a href="">More navigation</a></li>
+      </ul>
+      <ul class="nav nav-sidebar">
+        <li><a href="">Nav item again</a></li>
+        <li><a href="">One more nav</a></li>
+        <li><a href="">Another nav item</a></li>
+      </ul>
+    </div>
+  
+    ## render the JS with the same name as this page
+    ${ static_renderer.get_template_js(request, context)  }
+  
+  </body>
+</html>

@@ -1,0 +1,89 @@
+## this is the skeleton of all pages on in this app - it defines the basic html tags
+
+## set up a StaticRenderer object to enable the CSS/JS automatic inclusion magic.
+<%! from django_mako_plus.controller import static_files %>
+<%  static_renderer = static_files.StaticRenderer(self) %>
+
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8">
+  <head>
+    
+    <title>Homepage</title>
+    
+    ## add any site-wide scripts or CSS here; for example, jquery:
+    <script src="/static/homepage/scripts/jQuery.js"></script>
+    <script src="/static/homepage/scripts/bootstrap.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/bootstrap-theme.css">
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/dashboard.css">
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/cover.css">
+  
+    ## render the css with the same name as this page
+    ${ static_renderer.get_template_css(request, context)  }
+  
+  </head>
+  <body>
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">BYU Information Systems</h3>
+              <ul class="nav masthead-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="#">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="inner cover">
+
+            <h1 class="cover-heading">Welcome to ISLand</h1>
+              <form class="form-horizontal signin-form" method="POST" action="/homepage/cover1/">
+                ${ form.non_field_errors() }
+                % for field in form:
+                  <div class="form-group">
+                    <label class="col-md-2 control-label">${field.label}</label>
+                    <div class="col-md-5">
+                      ${field} 
+                      <div class="form-constrol" style="padding-left: 0px">${field.errors}</div>
+                    </div>
+                  </div>
+                % endfor
+                <div class="form-group col-md-9"> 
+                  <button type="submit" class="btn btn-lg btn-default lead">Sign In</button>
+                </div>
+              </form>
+            
+
+          </div>
+
+          <div class="mastfoot">
+            <div class="inner">
+              <p><a href="#hello">Terms and Conditions</a></p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    ## this is the skeleton of all pages on in this app - it defines the basic html tags
+
+    ## set up a StaticRenderer object to enable the CSS/JS automatic inclusion magic.
+    <%! from django_mako_plus.controller import static_files %>
+    <%  static_renderer = static_files.StaticRenderer(self) %>
+  
+    ## render the JS with the same name as this page
+    ${ static_renderer.get_template_js(request, context)  }
+  
+  </body>
+</html>
