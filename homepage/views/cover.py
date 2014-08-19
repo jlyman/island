@@ -23,7 +23,7 @@ def process_request(request):
   if request.urlparams[0] == 'logout':
     logout(request)
     request.session.flush()
-    return HttpResponseRedirect('/homepage/cover1/')
+    return HttpResponseRedirect('/homepage/cover/')
 
   if request.user.is_authenticated():
     return HttpResponseRedirect('/homepage/index/')
@@ -39,7 +39,7 @@ def process_request(request):
     'form': form,
   }
 
-  return templater.render_to_response(request, 'cover1.html', template_vars)
+  return templater.render_to_response(request, 'cover.html', template_vars)
 
 class LoginForm(forms.Form):
   '''This is a Django login form'''

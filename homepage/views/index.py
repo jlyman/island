@@ -12,7 +12,7 @@ templater = MakoTemplateRenderer('homepage')
 def process_request(request):
 
   if not request.user.is_authenticated():
-    return HttpResponseRedirect('/homepage/cover1/')
+    return HttpResponseRedirect('/homepage/cover/')
   
   x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
   if x_forwarded_for:

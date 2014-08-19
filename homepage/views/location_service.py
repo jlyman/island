@@ -12,7 +12,7 @@ templater = MakoTemplateRenderer('homepage')
 def process_request(request):
 
   if not request.user.is_authenticated():
-    return HttpResponseRedirect('/homepage/cover1/')
+    return HttpResponseRedirect('/homepage/cover/')
 
   SESSION_SAVE_EVERY_REQUEST=True
 

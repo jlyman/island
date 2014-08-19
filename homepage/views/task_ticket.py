@@ -13,7 +13,7 @@ def create(request):
   '''Create a task ticket'''
 
   if not request.user.is_authenticated():
-    return HttpResponseRedirect('/homepage/cover1/')
+    return HttpResponseRedirect('/homepage/cover/')
 
   # CHECK TO SEE IF TASK TICKET ALREADY EXISTS
   taskID = request.urlparams[0]
@@ -25,7 +25,6 @@ def create(request):
     ticket = mmod.TaskTicket()
     ticket.user = request.user
     ticket.task = task
-    ticket.start_time = datetime.datetime.now()
     ticket.points = mmod.Task.objects.get(id=taskID).points
     ticket.save()
 
@@ -45,4 +44,4 @@ def finish(request):
   user = request.user
   user.total_points = user.total_points + ticket.points
   user.save()
-  return HttpResponseRedirect('/homepage/profile1/')
+  return HttpResponseRedirect('/homepage/profile/')

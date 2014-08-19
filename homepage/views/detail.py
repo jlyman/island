@@ -11,10 +11,20 @@ templater = MakoTemplateRenderer('homepage')
 def process_request(request):
 
   if not request.user.is_authenticated():
-    return HttpResponseRedirect('/homepage/cover1/')
+    return HttpResponseRedirect('/homepage/cover/')
 
-  template_vars = {
-
+  taskID = request.urlparams[0]
+  task = mmod.Task.objects.get(id=taskID)
+  try:
+    ticket = mmod.TaskTicket.objects.get(user=request.user, task=task, start_time__isnull=False, end_time__isnull=True)
+    in_progress = True
+    template_vars = {
+      'in_progress': in_progress
+    }
+  except:
+    in_progress = False
+    template_vars = {
+      'in_progress': in_progress
     }
 
   return templater.render_to_response(request, 'detail.html', template_vars)

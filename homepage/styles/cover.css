@@ -159,3 +159,33 @@ body {
     width: 700px;
   }
 }
+
+
+body { 
+  background: url(../media/image/byu_football.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.masthead, .site-wrapper-inner{
+  background: rgba(0,0,0,.5);
+}
+
+.signin-form {
+  margin-left: 175px;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.errorlist {
+  list-style-type: none;
+  color: #FF3333;
+  text-align: left;
+  padding-left:0px;
+  width: 200px;
+}

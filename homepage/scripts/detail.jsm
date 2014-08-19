@@ -10,6 +10,8 @@ $(function(){
     }});
   });
 
-
+  %if in_progress:
+    $('#start').trigger('click.add');
+  %endif
 
 });
