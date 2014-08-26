@@ -30,17 +30,18 @@ def create(request):
     ticket.points = mmod.Task.objects.get(id=taskID).points
     ticket.save()
 
-  now = datetime.datetime.utcnow().replace(tzinfo=utc)
+  now = datetime.datetime.now()
   timediff = now - ticket.start_time
   
   # print(ticket.start_time.strftime('%d-%m-%Y %H:%M:%S'))
 
   template_vars = {
     'ticket': ticket,
-    'timer': timediff.total_seconds(),
+    'timediff_at_page_load': timediff.total_seconds(),
   }
 
-  return templater.render_to_response(request, 'create_task_ticket.html', template_vars)
+  return templater.render_to_response(request, 'task_ticket.create.html', template_vars)
+
 
 @view_function
 def pre_finish(request):
