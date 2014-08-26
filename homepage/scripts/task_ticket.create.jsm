@@ -24,6 +24,17 @@ $(function() {
       $(this).text(toHHMMSS(seconds_since_task_start));
     },
   });
+
+
+  $('#finish').off('click.add').on('click.add', function(evt) {
+    $.loadmodal({
+      url: '/homepage/task_ticket.pre_finish/${ ticket.id }/',
+      id: 'custom_modal_id',
+      title: 'Rate Task',
+      width: '500px',
+      
+    }); 
+  });
   
   
 });//ready

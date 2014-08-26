@@ -13,28 +13,29 @@ templater = MakoTemplateRenderer('homepage')
 @view_function
 def create(request):
   '''Create a task ticket'''
-
+  print(0)
   if not request.user.is_authenticated():
     return HttpResponseRedirect('/homepage/cover/')
-
+  print(1)
   # CHECK TO SEE IF TASK TICKET ALREADY EXISTS
   taskID = request.urlparams[0]
   task = mmod.Task.objects.get(id=taskID)
   try:
     ticket = mmod.TaskTicket.objects.get(user=request.user, task=task, start_time__isnull=False, end_time__isnull=True)
-
+    print(2)
   except mmod.TaskTicket.DoesNotExist:
     ticket = mmod.TaskTicket()
     ticket.user = request.user
     ticket.task = task
     ticket.points = mmod.Task.objects.get(id=taskID).points
     ticket.save()
-
+    print(3)
+  print(4)
   now = datetime.datetime.now()
   timediff = now - ticket.start_time
   
   # print(ticket.start_time.strftime('%d-%m-%Y %H:%M:%S'))
-
+  print(5)
   template_vars = {
     'ticket': ticket,
     'timediff_at_page_load': timediff.total_seconds(),
@@ -45,7 +46,7 @@ def create(request):
 
 @view_function
 def pre_finish(request):
-  # ticket = 
+  ticket = mmod.TaskTicket.objects.get(id=request.urlparams[0])
   if not request.user.is_authenticated():
     return HttpResponseRedirect('/homepage/cover/')
   form = RatingForm(request.POST or None)

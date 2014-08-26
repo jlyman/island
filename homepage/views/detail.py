@@ -19,14 +19,11 @@ def process_request(request):
   task = mmod.Task.objects.get(id=taskID)
   try:
     ticket = mmod.TaskTicket.objects.get(user=request.user, task=task, start_time__isnull=False, end_time__isnull=True)
-    in_progress = True
-    template_vars = {
-      'in_progress': in_progress
-    }
-  except:
-    in_progress = False
-    template_vars = {
-      'in_progress': in_progress
-    }
-
+    
+  except mmod.TaskTicket.DoesNotExist:
+    ticket = None
+    
+  template_vars = {
+    'ticket': ticket,
+  }
   return templater.render_to_response(request, 'detail.html', template_vars)
