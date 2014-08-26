@@ -1,0 +1,43 @@
+<%inherit file="base_ajax.htm" />
+
+<%block name="content">
+
+  <h4><div class="label label-danger" id="timing" style="position: fixed; left:0px; top: 50%;"></div></h4>
+  
+  <div class="container">
+    <div class="image"><img src="/static/homepage/media/image/no1.png" height="80px"/></div>
+    <div class="jumbotron step">    
+      Go to www.byu.edu
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="image"><img src="/static/homepage/media/image/no2.png" height="80px"/></div>
+    <div class="jumbotron step">    
+      Go to www.byu.edu
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="image"><img src="/static/homepage/media/image/no3.png" height="80px"/></div>
+    <div class="jumbotron step">    
+      Go to www.byu.edu
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="image"><img src="/static/homepage/media/image/no4.png" height="80px"/></div>
+    <div class="jumbotron step">    
+      Go to www.byu.edu
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="container">
+    <div class="jumbotron" style="padding-top: 15px; padding-bottom: 15px;">    
+      <a id="finish" class="btn btn-lg btn-success" href="/homepage/task_ticket.finish/${ ticket.id }" role="button">FINISH</a>
+    </div>
+  </div>
+
+</%block>
