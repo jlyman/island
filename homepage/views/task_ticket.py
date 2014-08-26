@@ -5,6 +5,8 @@ from management import models as mmod
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django_mako_plus.controller import view_function
 import datetime
+from django.utils.timezone import utc
+import time
 
 templater = MakoTemplateRenderer('homepage')
 
@@ -28,8 +30,14 @@ def create(request):
     ticket.points = mmod.Task.objects.get(id=taskID).points
     ticket.save()
 
+  now = datetime.datetime.utcnow().replace(tzinfo=utc)
+  timediff = now - ticket.start_time
+  
+  # print(ticket.start_time.strftime('%d-%m-%Y %H:%M:%S'))
+
   template_vars = {
     'ticket': ticket,
+    'timer': timediff.total_seconds(),
   }
 
   return templater.render_to_response(request, 'create_task_ticket.html', template_vars)

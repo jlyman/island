@@ -4,9 +4,9 @@ UNDEFINED = runtime.UNDEFINED
 __M_dict_builtin = dict
 __M_locals_builtin = locals
 _magic_number = 10
-_modified_time = 1405973160.577933
+_modified_time = 1408477502.127008
 _enable_loop = True
-_template_filename = '/Users/thongpham/Desktop/Programming/Web/theCproject/homepage/templates/detail.html'
+_template_filename = '/Users/thongapham/Desktop/Aug_8_2014Mac/theCproject/homepage/templates/detail.html'
 _template_uri = 'detail.html'
 _source_encoding = 'ascii'
 import os, os.path, re
@@ -57,6 +57,6 @@ def render_content(context,**pageargs):
 
 """
 __M_BEGIN_METADATA
-{"uri": "detail.html", "source_encoding": "ascii", "filename": "/Users/thongpham/Desktop/Programming/Web/theCproject/homepage/templates/detail.html", "line_map": {"35": 1, "52": 3, "40": 21, "58": 52, "28": 0, "46": 3}}
+{"uri": "detail.html", "line_map": {"35": 1, "52": 3, "40": 21, "58": 52, "28": 0, "46": 3}, "source_encoding": "ascii", "filename": "/Users/thongapham/Desktop/Aug_8_2014Mac/theCproject/homepage/templates/detail.html"}
 __M_END_METADATA
 """

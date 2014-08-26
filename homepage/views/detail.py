@@ -4,6 +4,8 @@ from django_mako_plus.controller import view_function
 from management import models as mmod
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django_mako_plus.controller import view_function
+import datetime
+from django.utils.timezone import utc
 
 templater = MakoTemplateRenderer('homepage')
 
