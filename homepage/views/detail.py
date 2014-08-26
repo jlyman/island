@@ -19,7 +19,6 @@ def process_request(request):
   task = mmod.Task.objects.get(id=taskID)
   try:
     ticket = mmod.TaskTicket.objects.get(user=request.user, task=task, start_time__isnull=False, end_time__isnull=True)
-    
   except mmod.TaskTicket.DoesNotExist:
     ticket = None
     

@@ -85,6 +85,7 @@ USE_TZ = False
 
 AUTH_USER_MODEL = 'management.SiteUser'
 
+DEBUG_PROPAGATE_EXCEPTIONS = DEBUG
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
