@@ -29,11 +29,25 @@ $(function(){
           timing = timing.toString();
         }, 1000);
     }});
-
   });
 
   %if in_progress:
     $('#start').trigger('click.add');
   %endif
+
+  $('#finish').off('click.add').on('click.add', function(evt) {
+    $('#modal_load').loadmodal({
+      url: '/product/add_to_cart/update/',
+      id: 'custom_modal_id',
+      title: 'Rate Task',
+      width: '500px',
+      ajax: {
+        dataType: 'html',
+        success: function(data, status, xhr) {
+          console.log('hello');
+        },
+      },
+    }); 
+  });
 
 });

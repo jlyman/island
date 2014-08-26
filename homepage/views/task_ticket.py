@@ -43,7 +43,36 @@ def create(request):
   return templater.render_to_response(request, 'create_task_ticket.html', template_vars)
 
 @view_function
+def pre_finish(request):
+  # ticket = 
+  if not request.user.is_authenticated():
+    return HttpResponseRedirect('/homepage/cover/')
+  form = RatingForm(request.POST or None)
+  if request.method == 'POST':
+    form = RatingForm(request.POST)
+    if form.is_valid():
+      ticket.comment = form.cleaned_data['comment']
+      ticket.rating = form.cleaned_data['rating']
+      ticket.save()
+      return HttpResponseRedirect('/homepage/task_ticket.finish/')
+
+  template_vars = {
+    'form': form,
+  }
+
+  return templater.render_to_response(request, 'rating.html', template_vars)
+
+class RatingForm(forms.Form):
+  '''This is a Django login form'''
+
+  comment = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+  rating = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+@view_function
 def finish(request):
+  if not request.user.is_authenticated():
+    return HttpResponseRedirect('/homepage/cover/')
+
   '''Mark the task ticket as completed'''
   ticketID = request.urlparams[0];
   ticket = mmod.TaskTicket.objects.get(id=ticketID)
