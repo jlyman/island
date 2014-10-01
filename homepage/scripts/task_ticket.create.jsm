@@ -32,9 +32,7 @@ $(function() {
       id: 'custom_modal_id',
       title: 'Rate Task',
       width: '500px',
-      
     }); 
   });
-  
   
 });//ready

@@ -1,19 +1,20 @@
 <%inherit file="base_ajax.htm" />
 <%block name="content">
 
-<form class="form-horizontal signin-form" method="POST" action="/homepage/cover/">
+<form class="form-horizontal signin-form" method="POST" action="/homepage/task_ticket.pre_finish/${ticketID}">
   ${ form.non_field_errors() }
   % for field in form:
     <div class="form-group">
       <label class="col-md-2 control-label">${field.label}</label>
-      <div class="col-md-5">
+      <div class="col-md-10">
         ${field} 
-        <div class="form-constrol" style="padding-left: 0px">${field.errors}</div>
       </div>
     </div>
   % endfor
-  <div class="form-group col-md-9"> 
-    <button type="submit" class="btn btn-lg btn-default lead">Sign In</button>
+  <div class="form-group">
+    <div class="col-md-12" style="text-align: center;">
+      <button type="submit" class="btn btn-danger">Submit</button>
+    </div>
   </div>
 </form
 

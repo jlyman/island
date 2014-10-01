@@ -11,17 +11,6 @@ templater = MakoTemplateRenderer('homepage')
 @view_function
 def process_request(request):
 
-  if not request.user.is_authenticated():
-    return HttpResponseRedirect('/homepage/cover/')
-  
-  x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-  if x_forwarded_for:
-    ip = x_forwarded_for.split(',')[0]
-  else:
-    ip = request.META.get('REMOTE_ADDR')
-  if not request.user.is_authenticated():
-    return HttpResponseRedirect('/homepage/cover1/')
-
   mytasks = mmod.TaskTicket.objects.filter(user=request.user).values_list('task_id', flat=True)
   tasks = mmod.Task.objects.exclude(repeatable=False, id__in=mytasks).order_by('name')
   

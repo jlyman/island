@@ -45,6 +45,8 @@ class TaskStep(models.Model):
   task = models.ForeignKey(Task)
   sort_order = models.IntegerField(max_length=200, blank=True, null=True)
   description = models.TextField(blank=True, null=True)
+  def __str__(self):
+    return str(self.task.name) + ' ' + 'step' + str(self.sort_order)
 
 class TaskTicket(models.Model):
   user = models.ForeignKey(SiteUser)
@@ -52,7 +54,7 @@ class TaskTicket(models.Model):
   start_time = models.DateTimeField(auto_now_add=True)
   end_time = models.DateTimeField(blank=True, null=True)
   rating = models.IntegerField(max_length=200, blank=True, null=True)
-  comments = models.TextField(blank=True, null=True)
+  comment = models.TextField(blank=True, null=True)
   points = models.IntegerField(max_length=200, blank=True, null=True)
   def __str__(self):
     return str(self.id)

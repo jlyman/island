@@ -7,38 +7,41 @@ from django_mako_plus.controller import view_function
 import datetime
 from django.utils.timezone import utc
 import time
+from django import forms
 
 templater = MakoTemplateRenderer('homepage')
 
 @view_function
 def create(request):
   '''Create a task ticket'''
-  print(0)
   if not request.user.is_authenticated():
     return HttpResponseRedirect('/homepage/cover/')
-  print(1)
+
   # CHECK TO SEE IF TASK TICKET ALREADY EXISTS
   taskID = request.urlparams[0]
   task = mmod.Task.objects.get(id=taskID)
+
+  try:
+    taskSteps = mmod.TaskStep.objects.filter(task=task).order_by('sort_order')
+  except mmod.TaskStep.DoesNotExist:
+    taskSteps = []
+
   try:
     ticket = mmod.TaskTicket.objects.get(user=request.user, task=task, start_time__isnull=False, end_time__isnull=True)
-    print(2)
   except mmod.TaskTicket.DoesNotExist:
     ticket = mmod.TaskTicket()
     ticket.user = request.user
     ticket.task = task
     ticket.points = mmod.Task.objects.get(id=taskID).points
     ticket.save()
-    print(3)
-  print(4)
+
   now = datetime.datetime.now()
   timediff = now - ticket.start_time
   
-  # print(ticket.start_time.strftime('%d-%m-%Y %H:%M:%S'))
-  print(5)
   template_vars = {
     'ticket': ticket,
     'timediff_at_page_load': timediff.total_seconds(),
+    'taskSteps': taskSteps,
   }
 
   return templater.render_to_response(request, 'task_ticket.create.html', template_vars)
@@ -46,7 +49,8 @@ def create(request):
 
 @view_function
 def pre_finish(request):
-  ticket = mmod.TaskTicket.objects.get(id=request.urlparams[0])
+  ticketID = request.urlparams[0]
+  ticket = mmod.TaskTicket.objects.get(id=ticketID)
   if not request.user.is_authenticated():
     return HttpResponseRedirect('/homepage/cover/')
   form = RatingForm(request.POST or None)
@@ -56,10 +60,11 @@ def pre_finish(request):
       ticket.comment = form.cleaned_data['comment']
       ticket.rating = form.cleaned_data['rating']
       ticket.save()
-      return HttpResponseRedirect('/homepage/task_ticket.finish/')
+      return HttpResponseRedirect('/homepage/task_ticket.finish/' + str(ticketID))
 
   template_vars = {
     'form': form,
+    'ticketID': ticketID,
   }
 
   return templater.render_to_response(request, 'rating.html', template_vars)
@@ -67,8 +72,8 @@ def pre_finish(request):
 class RatingForm(forms.Form):
   '''This is a Django login form'''
 
-  comment = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
-  rating = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+  comment = forms.CharField(required=True, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}))
+  rating = forms.ChoiceField(required=True, choices=[(x, x) for x in range (1, 6)], widget=forms.Select(attrs={'class':'form-control'}))
 
 @view_function
 def finish(request):
