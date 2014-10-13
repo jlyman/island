@@ -11,8 +11,10 @@ templater = MakoTemplateRenderer('homepage')
 @view_function
 def process_request(request):
 
-  mytasks = mmod.TaskTicket.objects.filter(user=request.user).values_list('task_id', flat=True)
-  tasks = mmod.Task.objects.exclude(repeatable=False, id__in=mytasks).order_by('name')
+  tasks = None
+  if request.user.is_authenticated():
+    mytasks = mmod.TaskTicket.objects.filter(user=request.user).values_list('task_id', flat=True)
+    tasks = mmod.Task.objects.exclude(repeatable=False, id__in=mytasks).order_by('name')
   
   template_vars = {
     'tasks' : tasks,
