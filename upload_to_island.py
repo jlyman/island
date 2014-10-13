@@ -40,25 +40,17 @@ import manage  # sets up the settings environment var
 from django.conf import settings
 
 
-# # ######################################################################################################################
-# # ###   Combine the CSS in the base_app/styles/global directory since that special directory gets included in every page
-#
-# from scripts import global_resources
-# global_resources.combine_css()
-# global_resources.combine_js()
-#
-#
-# ######################################################################################################################
-# ###   Collect and minify the static files
-#
-# print('Collecting and minifying static files...')
-# # delete the minified directory
-# if os.path.exists(settings.STATIC_ROOT):
-#   shutil.rmtree(settings.STATIC_ROOT)
-# # run the collect static command
-# os.system('python manage.py dmp_collectstatic --ignore=templates_static --ignore=locale --ignore=fixtures')
-#
-#
+######################################################################################################################
+###   Collect and minify the static files
+
+print('Collecting and minifying static files...')
+# delete the minified directory
+if os.path.exists(settings.STATIC_ROOT):
+  shutil.rmtree(settings.STATIC_ROOT)
+# run the collect static command
+os.system('python3 manage.py dmp_collectstatic')
+
+
 
 
 #####################################################

@@ -56,7 +56,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'theCproject.urls'
 
-WSGI_APPLICATION = 'theCproject.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 
 # Database
