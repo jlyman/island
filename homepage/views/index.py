@@ -10,6 +10,8 @@ templater = MakoTemplateRenderer('homepage')
 
 @view_function
 def process_request(request):
+  if not request.user.is_authenticated():
+    return HttpResponseRedirect('/homepage/cover/')
 
   tasks = None
   if request.user.is_authenticated():

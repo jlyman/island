@@ -7,7 +7,7 @@
         %for task in tasks:
           <li class="img-li"><a href="/homepage/detail/${task.id}">
             <h2 style="text-align: center;">${task.name}</h2>
-            <img src="/static/homepage/media/image/task/task_${task.id}.png" width="210px" height="210px"/></a>
+            <img src="${ STATIC_URL }homepage/media/image/task/task_${task.id}.png" width="210px" height="210px"/></a>
             <div class="thumbnail-info"> 
               Desc: ${task.description}<br/>
               Points: ${task.points}<br/>
