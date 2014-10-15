@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.http import HttpRequest
 
 templater = MakoTemplateRenderer('homepage')
-
+#Hello
 @view_function
 def process_request(request):
   if not request.user.is_authenticated():
