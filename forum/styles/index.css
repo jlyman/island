@@ -6,3 +6,10 @@
   background-color: #fff;
 }
 
+#threads_table td.col_icon {
+  vertical-align: middle;
+}
+
+#threads_table .col_topic .icon {
+  font-size: 20px;
+}

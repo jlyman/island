@@ -1,0 +1,35 @@
+<%inherit file="base.htm" />
+
+<%block name="content">
+
+  <ul class="breadcrumbs">
+    <li><a href="/">Island</a></li>
+    <li><a href="/forum/">Threads</a></li>
+  </ul>
+  
+  <h1>Start New Thread</h1>
+  
+  <div class="clearfix"></div>
+
+  <div id="form_rules">
+    <div id="form_rules_inner">
+      <h2>Forum Rules:</h2>
+      <ul class="form_rules_list">
+        <li><div class="icon icon_wondering"></div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </li>
+        <li><div class="icon icon_wave2"></div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </li>
+        <li><div class="icon icon_link22"></div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </li>
+      </ul>
+  
+    <div id="form_container">
+      ${ form.non_field_errors() }
+      <form method="POST">
+        <table>
+          ${ form.as_table() }
+        </table>
+        <div class="text-center"><input type="submit" class="btn btn-success" name="submit" value="Start Thread" /></div>
+      </form>
+    </div><!-- form_container -->
+
+    </div>
+  </div>
+</%block>

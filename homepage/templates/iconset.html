@@ -1,0 +1,14 @@
+<%inherit file="base.htm" />
+
+<%block name="content">
+  <h1>Icomoon Iconset:</h1>
+  <div class="iconset_container">        
+      %for name in icon_names:
+        <div class="icon_container">
+          <div class="icon_demo"><div class="icon ${ name }"></div></div>
+          <div class="icon_name">${ name }</div>
+          <div class="icon_divcode">&lt;div class="icon ${ name }"&gt;&lt;/div&gt;</div>
+        </div>
+      %endfor
+  </div>
+</%block>

@@ -208,14 +208,6 @@ font-weight: 700;
     float: right;
 }
 
-.fa.arrow:before {
-    content: "\f104";
-}
-
-.active > a > .fa.arrow:before {
-    content: "\f107";
-}
-
 
 .nav-second-level li,
 .nav-third-level li {

@@ -2,12 +2,92 @@
 
 <%block name="content">
 
-  <h1>${ thread.title | h }</h1>
+  <div class="clearfix">&nbsp;</div>
+  <div class="thread_information">
+    <table>
+      <tr>
+        <td>Posted:</td>
+        <td>${ thread.created.strftime('%b %d at %H:%M') }</td>
+      <tr></tr>
+        <td>By:</td>
+        <td>${ thread.user.fullname }</td>
+      </tr>
+    </table>
+  </div>
+
+  <ul class="breadcrumbs">
+    <li><a href="/">Island</a></li>
+    <li><a href="/forum/">Threads</a></li>
+  </ul>
   
-  %for comment in thread.comments.order_by('-created'):
-    <div class="comment_container">
-      <div class="comment_text">${ comment.comment }</div>
+  <h1>
+    <div class="pull-left icon ${ thread.topic.icon }"></div>
+    ${ thread.title | h }
+  </h1>
+  
+  <div class="clearfix"></div>
+  <div class="post_comment_button_container"><button class="post_comment_button btn btn-success"><div class="icon icon_pencil5 icon_color_white" style="margin-top: -4px;" aria-label="Pencil5"></div>&nbsp; New Comment</button></div>
+
+  <% comment_i = 0 %>
+  %for comment in comments:
+    <% delay = (comment.created - thread.created).total_seconds() %>
+    <div class="comment_container" id="comment_${ comment.id }">
+      <div class="comment_container_vertical_line"></div>
+    
+      <div class="comment_container_left">
+        <div class="comment_container_left_top">
+          <div class="comment_user"><a href="">${ comment.user.fullname }</a></div>
+        </div><!-- comment_container_left_top -->
+        
+        <div class="comment_container_left_bottom">
+          <div>Joined: ${ comment.user.date_joined.strftime('%b %Y') }</div>
+          <div>Points: ${ comment.user.total_points }</div>
+        </div><!-- comment_container_left_bottom -->
+      </div><!-- comment_container_left -->
+      
+      <div class="comment_container_right">
+        <div class="comment_container_right_top">
+          <div class="pull-right comment_number">${ comment_i + 1 }</div>
+          <div><div class="icon icon_bubble13 icon_color_gray"></div>&nbsp;&nbsp;&nbsp;${ seconds_to_dhm(delay) if delay >= 60 else seconds_to_dhms(delay) if delay > 1 else comment.created.strftime('%b %d at %H:%M') }</div>
+        </div><!-- comment_container_right_top -->
+        
+        <div class="comment_container_right_bottom">
+          <div class="comment_text">${ comment.comment }</div>
+        </div><!-- comment_container_right_bottom -->
+      </div><!-- comment_container_right -->
+      
+      <div class="clearfix"></div>
     </div><!-- comment_container -->
+    
+    <% comment_i += 1 %>
   %endfor
+
+
+  ## New comment form
+  <div id="comment_form_container">
+    <div class="comment_container">
+      <div class="comment_container_vertical_line"></div>
+  
+      <div class="comment_container_left">
+        <div class="icon icon_pencil5"></div>
+      </div><!-- comment_container_left -->
+    
+      <div class="comment_container_right">
+        <div class="comment_container_right_top">
+          <div class="pull-right comment_number">${ comment_i + 2 }</div>
+          <div>Post New Comment:</div>
+        </div><!-- comment_container_right_top -->
+      
+        <div class="comment_container_right_bottom">
+          <form method="POST">
+            ${ comment_form }
+            <div class="text-center"><input type="submit" class="btn btn-success" name="submit" value="Post Comment" /></div>
+          </form>
+        </div><!-- comment_container_right_bottom -->
+      </div><!-- comment_container_right -->
+    
+      <div class="clearfix"></div>
+    </div><!-- comment_container -->
+  </div><!-- #comment_form_container -->  
 
 </%block>

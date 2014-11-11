@@ -1,5 +1,5 @@
 from django.conf import settings
-from django_mako_plus.controller.router import MakoTemplateRenderer
+from . import templater
 from django_mako_plus.controller import view_function
 from management import models as mmod
 from django.http import HttpResponse, HttpResponseRedirect, Http404
@@ -9,7 +9,6 @@ from django.utils.timezone import utc
 import time
 from django import forms
 
-templater = MakoTemplateRenderer('homepage')
 
 @view_function
 def create(request):

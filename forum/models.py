@@ -16,7 +16,9 @@ class Topic(models.Model):
      users to put their threads into only a few topics or it gets too combersome for users to select
      the topics they want filtered.'''
   created = models.DateTimeField(blank=True, null=True, auto_now_add=True)
+  sort_order = models.IntegerField(blank=True, null=True)
   title = models.TextField(blank=True, null=True)
+  icon = models.TextField(blank=True, null=True)
   
   def __str__(self):
     return '%s: %s' % (self.id, self.title)
@@ -28,7 +30,6 @@ class Thread(models.Model):
   user = models.ForeignKey(mmod. SiteUser)
   topic = models.ForeignKey(Topic)
   title = models.TextField(blank=True, null=True) 
-    
   options = JSONField(blank=True, null=True)             # Artibrary options - these will never be queryable, but it 
                                                          # keeps us from constantly changing the database just to store a new option.
                                                          # See set_option and get_option below.

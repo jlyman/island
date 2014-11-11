@@ -125,39 +125,40 @@ STATICFILES_DIRS = (
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')  
 
- ###############################################################
- ###   Specific settings for the Django-Mako-Plus app
-
- # the default app/templates/ directory is always included in the template search path
- # define any additional search directories here - this allows inheritance between apps
- # absolute paths are suggested
+###############################################################
+###   Specific settings for the Django-Mako-Plus app
+# the default app/templates/ directory is always included in the template search path
+# define any additional search directories here - this allows inheritance between apps
+# absolute paths are suggested
 DMP_TEMPLATES_DIRS = [ 
    os.path.join(BASE_DIR, 'homepage', 'templates'),
 ]
 
- # identifies where the Mako template cache will be stored, relative to each app
+# identifies where the Mako template cache will be stored, relative to each app
 DMP_TEMPLATES_CACHE_DIR = 'cached_templates'
 
- # the default app and page to render in Mako when the url is too short
+# the default app and page to render in Mako when the url is too short
 DMP_DEFAULT_PAGE = 'index'  
 DMP_DEFAULT_APP = 'homepage'
 
- # these are included in every template by default - if you put your most-used libraries here, you won't have to import them exlicitly in templates
+# these are included in every template by default - if you put your most-used libraries here, you won't have to import them exlicitly in templates
+import lib.filters
 DMP_DEFAULT_TEMPLATE_IMPORTS = [
    'import os, os.path, re',
    'from decimal import Decimal',
+   'from lib.filters import %s' % (','.join(lib.filters.__all__)),
 ]
 
- # whether to send the custom DMP signals -- set to False for a slight speed-up in router processing
- # determines whether DMP will send its custom signals during the process
+# whether to send the custom DMP signals -- set to False for a slight speed-up in router processing
+# determines whether DMP will send its custom signals during the process
 DMP_SIGNALS = True
 
- # whether to minify using rjsmin, rcssmin during 1) collection of static files, and 2) on the fly as .jsm and .cssm files are rendered
- # rjsmin and rcssmin are fast enough that doing it on the fly can be done without slowing requests down
+# whether to minify using rjsmin, rcssmin during 1) collection of static files, and 2) on the fly as .jsm and .cssm files are rendered
+# rjsmin and rcssmin are fast enough that doing it on the fly can be done without slowing requests down
 DMP_MINIFY_JS_CSS = True
 
- ###  End of settings for the base_app Controller
- ################################################################
+###  End of settings for the base_app Controller
+################################################################
 
 AUTHENTICATION_BACKENDS = ( 
     'theCproject.auth_backend.custom_auth_backend.CustomBackend', 

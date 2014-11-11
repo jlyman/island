@@ -33,13 +33,14 @@ def get_table(request, as_response=True):
   threads_query = fmod.Thread.objects.order_by('-created')
   threads_query = table.adapt_query(threads_query, apply_filtering=True, apply_sorting=False, apply_pagination=True) # sorting not supported
   counts = dict(((r['thread'], (r['count'], r['latest'])) for r in fmod.Comment.objects.filter(thread__in=threads_query).values('thread').annotate(count=Count('thread'), latest=Max('created'))))
+
   for thread in threads_query:
     table.append((
-      '<span class="glyphicon glyphicon-chevron-right"></span>',
+      '<div class="icon icon_arrow_right2 icon_1p5x icon_color_gray" aria-label="Arrow Right"></div>',
       thread.created.strftime('%b %d at %H:%M'),
       (thread, ),
-      html_escape(thread.topic.title),
-      (thread, counts.get(thread.id, 1)),
+      (thread, ),
+      (thread, counts.get(thread.id)),
     ))
   
   # return the table
@@ -56,7 +57,7 @@ class ThreadTable(ServerSideTable):
     TableHeader('', 'col_icon'),
     TableHeader('Posted', 'col_date'), 
     TableHeader('Title', 'col_title', cell_viewer='title_viewer'), 
-    TableHeader('Topic', 'col_topic'), 
+    TableHeader('Topic', 'col_topic', cell_viewer="topic_viewer"), 
     TableHeader('', 'col_comments', cell_viewer='comments_viewer'), 
   ]
   css_class = 'customtable table table-hover'

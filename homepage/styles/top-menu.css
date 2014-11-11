@@ -66,8 +66,12 @@
 }
 
 .menu > li.home {
-  background: #3E454D url(http://s26.postimg.org/qbf4q4j9h/home.png) center no-repeat;
   width: 90px;
+}
+
+.menu > li.home .icon {
+  font-size: 32px;
+  margin-top: 15px;
 }
 
 .menu > li.current {

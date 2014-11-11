@@ -11,25 +11,27 @@
     
     <title>Homepage</title>
     
-    ## add any site-wide scripts or CSS here; for example, jquery:
+    ## js file for every page of the site
     <script src="/static/homepage/scripts/jQuery.js"></script>
     <script src="/static/homepage/scripts/bootstrap.js"></script>
     <script src="/static/homepage/scripts/jquery.woomark.js"></script>
     <script src="/static/homepage/scripts/jquery.powertimer.js"></script>
-    
     <script src="/static/homepage/scripts/jquery.classysocial.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script src="/static/homepage/scripts/custom.js"></script>
     <script src="/static/homepage/scripts/jquery_form.js"></script>
     <script src="/static/homepage/scripts/loadModal.js"></script>
 
+    ## css files for every page of the site
     <link rel="stylesheet" type="text/css" href="/static/homepage/styles/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="/static/homepage/styles/bootstrap-theme.css">
     <link rel="stylesheet" type="text/css" href="/static/homepage/styles/dashboard.css">
     <link rel="stylesheet" type="text/css" href="/static/homepage/styles/top-menu.css">
     <link rel="stylesheet" type="text/css" href="/static/homepage/styles/jquery.classysocial.min.css">
     <link rel="stylesheet" type="text/css" href="/static/homepage/styles/custom.css">
-    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/font-awesome-4.1.0/css/font-awesome.min.css">
+    ## our font set
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/icomoon-fonts/icomoon-iconset.css">
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/icomoon-customizations.css">
     
     ## render the css with the same name as this page
     ${ static_renderer.get_template_css(request, context)  }
@@ -41,7 +43,7 @@
       <nav>
         <ul class="menu">
           <li style="padding-top: 3px; text-align: center; background-color: white;"><img src="/static/homepage/media/image/task/logo.png" width="90%" height="100%" /></li>
-          <li class="home current"><a href="/homepage/index/"><span>Home</span></a></li>
+          <li class="home current"><a href="/homepage/index/"><div class="icon icon_home2 icon_color_white" aria-label="Home"></div></a></li>
           <li><a href="#"><span>About</span></a></li>
           <li><a href="#"><span>Service</span></a>
             <ul class="sub-menu">
@@ -58,7 +60,7 @@
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
             <div class="input-group-btn">
-                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                <button class="btn btn-default" type="submit"><div class="icon icon_search3" aria-label="Search3" style="font-size: 14px; margin-top: -3px;"></div></button>
             </div>
         </div>
       </form>

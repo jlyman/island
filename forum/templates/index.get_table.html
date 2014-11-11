@@ -2,10 +2,6 @@
 
 <%block name="content">
 
-  <div style="margin: 12px 0 0 24px;">
-    <a class="btn btn-success btn-lg" href="/forum/thread/new/">Start New Thread</a>
-  </div>
-
     ${ table.get_html(context) }
 
 </%block>
@@ -23,9 +19,17 @@
 
 <%def name="comments_viewer(thread, counts)">
   <div>
-    Latest: <a href="/forum/thread/${ thread.id }/">${ counts[1].strftime('%b %d at %H:%M') }</a>
+    Latest: <a href="/forum/thread/${ thread.id }/">${ counts[1].strftime('%b %d at %H:%M') if counts != None else '' }</a>
   </div>
   <div>
-    Replies: <a href="/forum/thread/${ thread.id }/">${ counts[0] - 1 }</a>
+    Replies: <a href="/forum/thread/${ thread.id }/">${ counts[0] - 1 if counts else '0' }</a>
+  </div>
+</%def>
+
+
+<%def name="topic_viewer(thread)">
+  <div class="inline-block text-center">
+    <div class="icon ${ thread.topic.icon }"></div>
+    <div class="topic_title">${ thread.topic.title }</div>
   </div>
 </%def>

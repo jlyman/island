@@ -1,12 +1,10 @@
 from django.conf import settings
-from django_mako_plus.controller.router import MakoTemplateRenderer
+from . import templater
 from django_mako_plus.controller import view_function
 from management import models as mmod
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-
 from django.http import HttpRequest
 
-templater = MakoTemplateRenderer('homepage')
 
 @view_function
 def process_request(request):
