@@ -1,0 +1,94 @@
+
+/************ Bootstrap overrides ***************/
+
+.table {
+  margin-bottom: 0;
+}
+
+.pagination-container {
+  text-align: right;
+}
+.pagination {
+  margin: 9px 12px;
+  text-align: left;
+}
+.pagination >li > a {
+  cursor: pointer;
+}
+.pagination >li > a.pagination_link_active {
+  background-color: #0088CC;
+  color: #fff;
+}
+
+.modal-body {
+  padding: 0;
+}
+.modal-body-inner {
+  padding: 20px;
+}
+.modal-footer {
+  margin-top: 0;
+}
+
+
+/* Colors for the iconset */
+
+.glyphicon {
+  color: rgb(98, 109, 109);
+}
+
+.glyphicon_color_blue {
+  color: rgb(18, 106, 200);
+}
+
+.glyphicon_color_cyan {
+  color: rgb(31, 139, 200); 
+}
+
+.glyphicon_color_darkblue {
+  color: rgb(27, 55, 77); 
+}
+
+.glyphicon_color_black {
+  color: rgb(0, 0, 0); 
+}
+
+.glyphicon_color_darkgray {
+  color: rgb(51, 51, 51); 
+}
+
+.glyphicon_color_gray {
+  color: rgb(157, 160, 164); 
+}
+
+.glyphicon_color_lightgray {
+  color: rgb(183, 186, 189); 
+}
+
+.glyphicon_color_verylightgray {
+  color: rgb(210, 212, 213); 
+}
+
+.glyphicon_color_green {
+  color: rgb(36, 141, 68); 
+}
+
+.glyphicon_color_maroon {
+  color: rgb(159, 2, 20); 
+}
+
+.glyphicon_color_orange {
+  color: rgb(246, 165, 69); 
+}
+
+.glyphicon_color_red {
+  color: rgb(184, 54, 52); 
+}
+
+.glyphicon_color_steel {
+  color: rgb(98, 109, 109);
+}
+
+.glyphicon_color_white {
+  color: rgb(244, 244, 244); 
+}

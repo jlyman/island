@@ -2,20 +2,26 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser     
-from polymorphic import PolymorphicModel
+
+#####################################################################
+###   User models
 
 class Level(models.Model):
   name = models.TextField(blank=False, null=False)
   description = models.TextField(blank=True, null=True)
   points_required = models.IntegerField(max_length=200, blank=False, null=False)
+
   def __str__(self):
-    return str(self.id) + ' ' + self.name
+    return '%s: %s' % (self.id, self.name)
+
 
 class UserType(models.Model):
   name = models.TextField(blank=True, null=True)
   description = models.TextField(blank=True, null=True)
+
   def __str__(self):
-    return str(self.id) + ' ' + self.name
+    return '%s: %s' % (self.id, self.name)
+
 
 class SiteUser(AbstractUser):
   level = models.ForeignKey(Level, blank=True, null=True)
@@ -25,8 +31,14 @@ class SiteUser(AbstractUser):
   phone = models.TextField(blank=True, null=True)
   BYU_status = models.TextField(blank=True, null=True)
   total_points = models.IntegerField(max_length=200, blank=True, null=True, default=0)
+
   def __str__(self):
-    return str(self.id) + ' ' + self.username
+    return '%s: %s' % (self.id, self.fullname)
+    
+    
+    
+######################################################################
+###   Tasks    
 
 class Task(models.Model):
   user_type = models.ForeignKey(UserType)
@@ -38,15 +50,18 @@ class Task(models.Model):
   importance = models.IntegerField(max_length=200, blank=True, null=True)
   points = models.IntegerField(max_length=200, blank=True, null=True)
   repeatable = models.NullBooleanField()
+
   def __str__(self):
-    return str(self.id) + ' ' + self.name
+    return '%s: %s' % (self.id, self.name)
+
 
 class TaskStep(models.Model):
   task = models.ForeignKey(Task)
   sort_order = models.IntegerField(max_length=200, blank=True, null=True)
   description = models.TextField(blank=True, null=True)
   def __str__(self):
-    return str(self.task.name) + ' ' + 'step' + str(self.sort_order)
+    return '%s: %s, step %s' % (self.id, self.name, self.sort_order)
+
 
 class TaskTicket(models.Model):
   user = models.ForeignKey(SiteUser)
@@ -56,5 +71,6 @@ class TaskTicket(models.Model):
   rating = models.IntegerField(max_length=200, blank=True, null=True)
   comment = models.TextField(blank=True, null=True)
   points = models.IntegerField(max_length=200, blank=True, null=True)
+
   def __str__(self):
-    return str(self.id)
+    return '%s: %s' % (self.id)

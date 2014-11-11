@@ -1,0 +1,14 @@
+h1 {
+  margin-left: 108px;
+}
+
+.comment_container {
+  margin: 24px 0 24px 96px;
+  border: 1px solid #CCC;
+  border-radius: 4px;
+  padding: 6px;
+}
+
+.comment_text {
+  margin: 0;
+}

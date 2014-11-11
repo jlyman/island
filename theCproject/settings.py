@@ -41,6 +41,7 @@ DJANGO_APPS = (
 CUSTOM_APPS = (
     'homepage',
     'management',
+    'forum',
 )
 INSTALLED_APPS = DJANGO_APPS + CUSTOM_APPS
 
@@ -52,6 +53,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_mako_plus.controller.router.RequestInitMiddleware',
+    'lib.middleware.WebGuidMiddleware',
 )
 
 ROOT_URLCONF = 'theCproject.urls'
@@ -130,7 +132,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
  # define any additional search directories here - this allows inheritance between apps
  # absolute paths are suggested
 DMP_TEMPLATES_DIRS = [ 
-   # os.path.join(BASE_DIR, 'base_app', 'templates'),
+   os.path.join(BASE_DIR, 'homepage', 'templates'),
 ]
 
  # identifies where the Mako template cache will be stored, relative to each app

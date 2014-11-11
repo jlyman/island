@@ -1,0 +1,8 @@
+pip3 install django              # framework
+pip3 install mako                # templating language
+pip3 install django-mako-plus    # connects django to mako
+pip3 install psycopg2            # database driver
+pip3 install python3-ldap        # talks with byu ldap server
+pip3 install django-jsonfield    # allows json in models
+pip3 install shortuuid           # creates short guids
+pip3 install rjsmin              # for filters.py
