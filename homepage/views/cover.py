@@ -8,6 +8,7 @@ from django.forms import fields, util
 from django.core import exceptions
 from django_mako_plus.controller.router import MakoTemplateRenderer
 from django_mako_plus.controller import view_function
+from . import templater
 
 
 
