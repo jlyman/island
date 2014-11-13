@@ -76,3 +76,10 @@ class Comment(models.Model):
       self.options = {}
     self.options[name] = value
     
+    
+    
+class CommentLike(models.Model):
+  '''A user like on a comment'''
+  created = models.DateTimeField(blank=True, null=True, auto_now_add=True)
+  user = models.ForeignKey(mmod. SiteUser)
+  comment = models.ForeignKey(Comment)

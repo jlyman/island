@@ -36,7 +36,7 @@
     
       <div class="comment_container_left">
         <div class="comment_container_left_top">
-          <div class="comment_user"><a href="">${ comment.user.fullname }</a></div>
+          <div class="comment_user"><a href="">${ comment.user.fullname | h }</a></div>
         </div><!-- comment_container_left_top -->
         
         <div class="comment_container_left_bottom">
@@ -52,7 +52,7 @@
         </div><!-- comment_container_right_top -->
         
         <div class="comment_container_right_bottom">
-          <div class="comment_text">${ comment.comment }</div>
+          <div class="comment_text">${ comment.comment | h }</div>
         </div><!-- comment_container_right_bottom -->
       </div><!-- comment_container_right -->
       
