@@ -6,3 +6,4 @@ from forum import models as fmod
 admin.site.register(fmod.Topic)
 admin.site.register(fmod.Thread)
 admin.site.register(fmod.Comment)
+admin.site.register(fmod.VoteTicket)

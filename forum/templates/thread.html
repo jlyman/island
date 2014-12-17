@@ -42,12 +42,18 @@
         <div class="comment_container_left_bottom">
           <div>Joined: ${ comment.user.date_joined.strftime('%b %Y') }</div>
           <div>Points: ${ comment.user.total_points }</div>
+          <div class="voting-area"> 
+            <a href="/forum/thread.vote/like/${comment.id}/${thread.id}"> <span class="icon icon_arrow_up2 icon_2x" style="display: block;"></span> </a>
+            <span style="display: block; font-size: 20px; margin-left: 7px; color: black;">${comment.vote}</span>
+            <a href="/forum/thread.vote/nlike/${comment.id}/${thread.id}"> <span class="icon icon_arrow_down2 icon_2x" style="display: block;"></span> </a>
+          </div>
         </div><!-- comment_container_left_bottom -->
       </div><!-- comment_container_left -->
       
       <div class="comment_container_right">
         <div class="comment_container_right_top">
-          <div class="pull-right comment_number">${ comment_i + 1 }</div>
+          <div class="pull-right comment_number">
+          <!--${ comment_i + 1 }--></div>
           <div><div class="icon icon_bubble13 icon_color_gray"></div>&nbsp;&nbsp;&nbsp;${ seconds_to_dhm(delay) if delay >= 60 else seconds_to_dhms(delay) if delay > 1 else comment.created.strftime('%b %d at %H:%M') }</div>
         </div><!-- comment_container_right_top -->
         

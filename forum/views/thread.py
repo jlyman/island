@@ -19,7 +19,7 @@ def process_request(request):
     thread = fmod.Thread.objects.get(pk=request.urlparams[0])
   except (fmod.Thread.DoesNotExist, ValueError, TypeError):
     raise RedirectException('/forum/')
-    
+
   # handle the form
   comment_form = CommentForm()
   if request.method == 'POST':
@@ -36,7 +36,43 @@ def process_request(request):
   params['comments'] = thread.comments.order_by('created')
   return templater.render_to_response(request, 'thread.html', params)
   
+@view_function
+def vote(request):
+  # handle vote button
+  thread = fmod.Thread.objects.get(id=request.urlparams[2])
+  comment = fmod.Comment.objects.get(id=request.urlparams[1])
+  try: 
+    existingVoteTicket = fmod.VoteTicket.objects.get(user=request.user, comment=comment)
+    if request.urlparams[0] == 'like':    
+      if existingVoteTicket.thumbs_up == True:
+        print('>>>>Nothing')
+      else:
+        comment.vote = comment.vote + 1
+        comment.save()
+        existingVoteTicket.thumbs_up = True
+        existingVoteTicket.save()
+    elif request.urlparams[0] == 'nlike':
+      if existingVoteTicket.thumbs_up == True:
+        comment.vote = comment.vote - 1
+        comment.save()
+        existingVoteTicket.thumbs_up = False
+        existingVoteTicket.save()
+      else:
+        print('>>>>Nothing')
+
+  except fmod.VoteTicket.DoesNotExist:
+    if request.urlparams[0] == 'like':    
+      voteTicket = fmod.VoteTicket(user=request.user, comment=comment, thumbs_up=True)
+      voteTicket.save()
+      comment.vote = comment.vote + 1
+      comment.save()
+    elif request.urlparams[0] == 'nlike':
+      voteTicket = fmod.VoteTicket(user=request.user, comment=comment, thumbs_up=False)
+      voteTicket.save()
+      comment.vote = comment.vote - 1
+      comment.save()
   
+  return HttpResponseRedirect('/forum/thread/%s#comment_%s' % (thread.id, comment.id))
   
 class CommentForm(forms.Form):
   '''Form to post new comment'''

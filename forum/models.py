@@ -27,7 +27,7 @@ class Topic(models.Model):
 class Thread(models.Model):    
   '''A discussion thread within a topic'''
   created = models.DateTimeField(blank=True, null=True, auto_now_add=True)
-  user = models.ForeignKey(mmod. SiteUser)
+  user = models.ForeignKey(mmod.SiteUser)
   topic = models.ForeignKey(Topic)
   title = models.TextField(blank=True, null=True) 
   options = JSONField(blank=True, null=True)             # Artibrary options - these will never be queryable, but it 
@@ -50,13 +50,13 @@ class Thread(models.Model):
     self.options[name] = value
     
     
-    
 class Comment(models.Model):
   '''A comment on a thread'''
   created = models.DateTimeField(blank=True, null=True, auto_now_add=True)
   user = models.ForeignKey(mmod. SiteUser)
   thread = models.ForeignKey(Thread, related_name='comments')
   comment = models.TextField(blank=True, null=True)
+  vote = models.IntegerField(default=0)
   options = JSONField(blank=True, null=True)             # Artibrary options - these will never be queryable, but it 
                                                          # keeps us from constantly changing the database just to store a new option.
                                                          # See set_option and get_option below.
@@ -76,3 +76,9 @@ class Comment(models.Model):
       self.options = {}
     self.options[name] = value
     
+
+class VoteTicket(models.Model):
+  '''A ticket for each thread vote'''
+  user = models.ForeignKey(mmod.SiteUser)
+  comment = models.ForeignKey(Comment)
+  thumbs_up = models.NullBooleanField()
