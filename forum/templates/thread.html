@@ -42,25 +42,52 @@
         <div class="comment_container_left_bottom">
           <div>Joined: ${ comment.user.date_joined.strftime('%b %Y') }</div>
           <div>Points: ${ comment.user.total_points }</div>
-          <div class="voting-area"> 
-            <a href="/forum/thread.vote/like/${comment.id}/${thread.id}"> <span class="icon icon_arrow_up2 icon_2x" style="display: block;"></span> </a>
-            <span style="display: block; font-size: 20px; margin-left: 7px; color: black;">${comment.vote}</span>
-            <a href="/forum/thread.vote/nlike/${comment.id}/${thread.id}"> <span class="icon icon_arrow_down2 icon_2x" style="display: block;"></span> </a>
-          </div>
         </div><!-- comment_container_left_bottom -->
       </div><!-- comment_container_left -->
       
       <div class="comment_container_right">
         <div class="comment_container_right_top">
-          <div class="pull-right comment_number">
-          <!--${ comment_i + 1 }--></div>
-          <div><div class="icon icon_bubble13 icon_color_gray"></div>&nbsp;&nbsp;&nbsp;${ seconds_to_dhm(delay) if delay >= 60 else seconds_to_dhms(delay) if delay > 1 else comment.created.strftime('%b %d at %H:%M') }</div>
+          <div class="comment_number">
+            ${ comment_i + 1 }
+          </div>
+          &nbsp;
         </div><!-- comment_container_right_top -->
         
         <div class="comment_container_right_bottom">
-          <div class="comment_text">${ comment.comment | h }</div>
+          <div class="voting_container"> 
+            <div><a class="vote_up_link" data-comment-id="${ comment.id }"><div class="icon icon_arrow_up2"></div></a></div>
+            <div class="current_vote">${comment.vote}</div>
+            <div><a class="vote_down_link" data-comment-id="${ comment.id }"><div class="icon icon_arrow_down2"></div></a></div>
+          </div>
         </div><!-- comment_container_right_bottom -->
       </div><!-- comment_container_right -->
+
+      <div class="comment_container_center">
+        <div class="comment_container_center_top">
+          <div><div class="icon icon_bubble13 icon_color_gray"></div>&nbsp;&nbsp;&nbsp;${ '+ %s' % seconds_to_dhm(delay) if delay >= 60 else seconds_to_dhms(delay) if delay > 1 else comment.created.strftime('%b %d at %H:%M') }</div>
+        </div><!-- comment_container_center_top -->
+        
+        <div class="comment_container_center_bottom">
+          <div class="comment_text">${ comment.comment | xss_escape }</div>
+          <div class="comment_attachments">
+            %for cf in comment.commentfile_set.all():
+              <a href="/forum/thread.attachment/${ cf.id }/${ 'inline' if cf.contenttype.startswith('image/') else '' }">
+                <div class="comment_attachment_container">
+                  <div class="comment_attachment_icon">
+                    %if cf.contenttype.startswith('image/'):
+                      <img src="/forum/thread.attachment/${ cf.id }/inline/"/>
+                    %else:
+                      <img src="${ STATIC_URL }homepage/media/file_extensions/${ cf.contenttype.replace('/', '-') }.png"/>
+                    %endif
+                  </div><!-- comment_attachment_icon -->
+                  <div class="comment_attachment_filename">${ cf.filename }</div>
+                </div><!-- comment_attachment_container -->
+              </a>
+            %endfor
+          </div><!-- comment_attachments -->
+          
+        </div><!-- comment_container_center_bottom -->
+      </div><!-- comment_container_center -->
       
       <div class="clearfix"></div>
     </div><!-- comment_container -->
@@ -78,19 +105,18 @@
         <div class="icon icon_pencil5"></div>
       </div><!-- comment_container_left -->
     
-      <div class="comment_container_right">
-        <div class="comment_container_right_top">
-          <div class="pull-right comment_number">${ comment_i + 2 }</div>
+      <div class="comment_container_center">
+        <div class="comment_container_center_top">
           <div>Post New Comment:</div>
-        </div><!-- comment_container_right_top -->
+        </div><!-- comment_container_center_top -->
       
-        <div class="comment_container_right_bottom">
-          <form method="POST">
-            ${ comment_form }
+        <div class="comment_container_center_bottom">
+          <form method="POST" enctype="multipart/form-data">
+            ${ comment_form.as_p() }
             <div class="text-center"><input type="submit" class="btn btn-success" name="submit" value="Post Comment" /></div>
           </form>
-        </div><!-- comment_container_right_bottom -->
-      </div><!-- comment_container_right -->
+        </div><!-- comment_container_center_bottom -->
+      </div><!-- comment_container_center -->
     
       <div class="clearfix"></div>
     </div><!-- comment_container -->

@@ -1,0 +1,3 @@
+exim4_island_router:
+  driver = accept
+  transport = exim4_island_transport

@@ -1,0 +1,15 @@
+# this is the custom island transport - the exim4_island_router is called first, 
+# and it routes emails to this transport for handling
+
+exim4_island_transport:
+  driver = pipe
+  path = "/bin:/usr/bin:/usr/local/bin"
+  command = /var/island/thecproject/theCproject/exim4_island_transport_handler.py $domain
+  user = www-data
+  group = www-data
+  return_path_add
+  delivery_date_add
+  envelope_to_add
+  log_output
+  return_fail_output
+  

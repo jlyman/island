@@ -64,12 +64,24 @@ h1 .icon {
 }
 
 .comment_container_right {
-  margin-left: 200px; /* .comment_container_left width */
+  float: right;
+  width: 60px;
 }
 
-.comment_container_left_top, .comment_container_left_bottom, .comment_container_right_top, .comment_container_right_bottom {
+.comment_container_center {
+  margin-left: 200px; /* .comment_container_left width */
+  margin-right: 60px; /* .comment_container_right width */
+}
+
+.comment_container_left_top, 
+.comment_container_left_bottom, 
+.comment_container_center_top, 
+.comment_container_center_bottom,
+.comment_container_right_top, 
+.comment_container_right_bottom {
   padding: 6px 9px;
   font-size: .9em;
+  position: relative;
 }
 
 
@@ -83,11 +95,22 @@ h1 .icon {
   border-bottom: 1px solid #CCC;
 } 
 
+.comment_container_center_top {
+  background-color: #E4E4E4;
+  border-bottom: 1px solid #CCC;
+  color: #888;
+}
+
 .comment_container_right_top {
   background-color: #E4E4E4;
   border-radius: 0 4px 0 0;
   border-bottom: 1px solid #CCC;
   color: #888;
+}
+
+.comment_container_right_bottom {
+  text-align: center;
+  border-radius: 0 0 4px 0;
 }
 
 .comment_text {
@@ -98,7 +121,9 @@ h1 .icon {
   color: #F4F4F4;
   text-shadow: 0 0 1px #000;
   font-size: 26px;
-  margin-top: -10px;
+  position: absolute;
+  right: 12px;
+  top: -4px;
 }
 
 .post_comment_button_container {
@@ -106,8 +131,16 @@ h1 .icon {
   text-align: right;
 }
 
+#comment_form_container .comment_container_center {
+  margin-right: 0;
+}
+
 #comment_form_container .comment_container_left {
   text-align: center;
+}
+
+#comment_form_container .comment_container_center_top {
+  border-left: 1px solid #CCCCCC;
 }
 
 #comment_form_container .comment_container_left .icon {
@@ -117,9 +150,53 @@ h1 .icon {
 }
 
 #comment_form_container label {
-  display: none;
+  font-weight: normal;
+  color: #888888;
+}
+
+#comment_form_container p {
+  text-align: right;
+}
+
+#comment_form_container input[type=file] {
+  margin-left: 12px;
+  display: inline-block;
+  color: #888;
 }
 
 #comment_form_container input[type=submit] {
   margin-top: 6px;
+}
+
+
+/* Comment attachments */
+
+.comment_attachment_container {
+  display: inline-block;
+  text-align: center;
+  margin: 12px 6px 0 6px;
+}
+
+.comment_attachment_icon img {
+  max-height: 400px;
+  max-width: 400px;
+}
+
+
+
+/* Voting container */
+
+.voting_container {
+  display: inline-block;
+  text-align: center;
+}
+
+.voting_container > div > a {
+  cursor: pointer;
+}
+
+.voting_container > div > a > .icon,
+.voting_container > div {
+  color: #888888;
+  font-size: 1.6em;
 }

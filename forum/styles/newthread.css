@@ -61,7 +61,9 @@ h2 {
 }
 
 #form_container #id_topic label {
-  padding: 9px 24px;
+  padding: 8px 0;
+  text-align: center;
+  width: 90px;
 }
 
 #form_container .icon {

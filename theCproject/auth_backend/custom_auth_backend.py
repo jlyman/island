@@ -36,7 +36,7 @@ class CustomBackend:
     import pprint; pprint.pprint(attributes)
 
     user.fullname = attributes.get('cn')[0] if attributes.get('cn') else ''
-    user.mail = attributes.get('mail')[0] if attributes.get('mail') else ''
+    user.email = attributes.get('mail')[0] if attributes.get('mail') else ''
     user.phone = attributes.get('permanentPhone')[0] if attributes.get('permanentPhone') else ''
     user.BYU_status = ','.join(attributes.get('employeeType')) if attributes.get('employeeType') else ''
     user.save()  

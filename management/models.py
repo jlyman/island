@@ -27,7 +27,6 @@ class SiteUser(AbstractUser):
   level = models.ForeignKey(Level, blank=True, null=True)
   user_type = models.ForeignKey(UserType, blank=True, null=True)
   fullname = models.TextField(blank=True, null=True)
-  mail = models.TextField(blank=True, null=True)
   phone = models.TextField(blank=True, null=True)
   BYU_status = models.TextField(blank=True, null=True)
   total_points = models.IntegerField(max_length=200, blank=True, null=True, default=0)

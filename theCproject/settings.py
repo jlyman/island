@@ -105,12 +105,22 @@ LOGGING = {
             'class':'logging.StreamHandler',
             'formatter': 'simple'
         },
+        'exim4_island_transport_handler_file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/tmp/exim4_island_transport_handler.log',
+        },
     },
     'loggers': {
         'django_mako_plus': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': False,
+        },
+        'exim4_island_transport_handler': {
+            'handlers': ['exim4_island_transport_handler_file'],
+            'level': 'DEBUG',
+            'propagate': True,
         },
     },
  }
