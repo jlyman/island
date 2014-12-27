@@ -1,6 +1,6 @@
 from django_mako_plus.controller.router import MakoTemplateRenderer
 from django_mako_plus.controller import RedirectException
-
+from homepage.views import prepare_params as homepage_prepare_params
 
 ###################################################
 ###   Create the emplater for this app once
@@ -12,10 +12,10 @@ templater = MakoTemplateRenderer('forum')
 
 def prepare_params(request):
   '''Creates a parameters dictionary for the current request.'''
-  # users have to be logged in to be anywhere in this app
-  if not request.user.is_authenticated():
-    raise RedirectException('/homepage/cover/')
+  # call the main prepare_params
+  params = homepage_prepare_params(request, require_authenticated=True)
+  
+  # we can add more stuff here when needed
 
   # return the parameters
-  return {}
-  
+  return params

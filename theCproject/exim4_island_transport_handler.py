@@ -10,7 +10,7 @@ import sys, os, re, email.parser
 # initializes django
 import init_django
 init_django.initialize()
-from management import models as mmod
+from homepage import models as hmod
 from forum import models as fmod
 from forum.views.newthread import create_thread
 
@@ -7958,7 +7958,7 @@ try:
   assert title, "Error: Could not parse the title of your new thread."
 
   # get the user object for this sender
-  user = mmod.SiteUser.objects.filter(email__iexact=sender).first()
+  user = hmod.SiteUser.objects.filter(email__iexact=sender).first()
   assert user != None, 'Error: the email %s is not authenticated to post to this system. Please check your account settings on Island.' % sender
 
   # get the topic object

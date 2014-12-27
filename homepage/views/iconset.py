@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.conf import settings
 from django_mako_plus.controller import view_function, RedirectException
-from . import templater
+from . import templater, prepare_params
 import re, os, os.path
 
 ########################################################################################
@@ -13,7 +13,8 @@ RE_COLOR = re.compile('^\.icon_color_(\w+) {.*$')
 
 @view_function
 def process_request(request):
-  params = {}
+  # check user permissions and prepare the params
+  params = prepare_params(request)
   
   # parse the font-awesome file
   icon_names = []

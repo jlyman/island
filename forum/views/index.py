@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db.models import Count, Min, Max
 from django_mako_plus.controller import view_function
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from management import models as mmod
+from homepage import models as hmod
 from lib.filters import *
 from forum import models as fmod
 from . import templater, prepare_params
@@ -28,9 +28,20 @@ def get_table(request, as_response=True):
   # check user permissions and prepare the params
   params = prepare_params(request)
   
+  # see if we have a filter by topic
+  topic = None
+  if request.urlparams[0]:
+    try:
+      topic = fmod.Topic.objects.get(title=request.urlparams[0])
+    except fmod.Topic.DoesNotExist:
+      pass
+  
   # query the threads and prepare the table
   table = ThreadTable(request)
+  table.endpoint_url = '/forum/index.get_table/%s' % url_escape(topic.title) if topic else ''
   threads_query = fmod.Thread.objects.order_by('-created')
+  if topic:
+    threads_query = threads_query.filter(topic=topic)
   threads_query = table.adapt_query(threads_query, apply_filtering=True, apply_sorting=False, apply_pagination=True) # sorting not supported
   counts = dict(((r['thread'], (r['count'], r['latest'])) for r in fmod.Comment.objects.filter(thread__in=threads_query).values('thread').annotate(count=Count('thread'), latest=Max('created'))))
 
@@ -63,5 +74,4 @@ class ThreadTable(ServerSideTable):
   css_class = 'customtable table table-hover'
   sortable = False
   rows_per_page = COMMENTS_PER_PAGE
-  endpoint_url = '/forum/index.get_table'
   

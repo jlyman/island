@@ -13,3 +13,8 @@
 #threads_table .col_topic .icon {
   font-size: 20px;
 }
+
+#threads_table .col_topic {
+  text-align: center;
+}
+

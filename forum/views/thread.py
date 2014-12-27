@@ -3,7 +3,7 @@ from django.conf import settings
 from django.db.models import Sum
 from django_mako_plus.controller import view_function, RedirectException
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from management import models as mmod
+from homepage import models as hmod
 from lib.filters import *
 from forum import models as fmod
 from . import templater, prepare_params
@@ -54,6 +54,11 @@ class CommentForm(forms.Form):
   
   
   
+def send_email_for_comment(comment):
+  '''Sends email out for a given comment'''
+  pass  
+  
+  
 #####################################################
 ###   Ajax endpoint to vote on a comment
   
@@ -77,6 +82,9 @@ def vote(request):
   # return the comment vote
   return HttpResponse(comment.vote)
   
+
+
+
 
 ###################################################
 ###   Downloads/views an attachment to a comment

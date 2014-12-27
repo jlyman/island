@@ -1,6 +1,6 @@
 # import the User object
 from django.contrib.auth.models import User
-from management import models as mmod
+from homepage import models as hmod
 from ldap3 import Server, Connection, LDAPException, AUTH_SIMPLE, STRATEGY_SYNC, GET_ALL_INFO, SEARCH_SCOPE_WHOLE_SUBTREE
 
 # Name my backend 'MyCustomBackend'
@@ -26,19 +26,16 @@ class CustomBackend:
     # next, ensure the user exists
     try:
       # Try to find a user matching your username
-      user = mmod.SiteUser.objects.get(username=ry_username)
+      user = hmod.SiteUser.objects.get(username=ry_username)
 
-    except mmod.SiteUser.DoesNotExist:
-      user = mmod.SiteUser()
+    except hmod.SiteUser.DoesNotExist:
+      user = hmod.SiteUser()
       user.username = ry_username
-
-    # finally, update the user information from ldap
-    import pprint; pprint.pprint(attributes)
 
     user.fullname = attributes.get('cn')[0] if attributes.get('cn') else ''
     user.email = attributes.get('mail')[0] if attributes.get('mail') else ''
     user.phone = attributes.get('permanentPhone')[0] if attributes.get('permanentPhone') else ''
-    user.BYU_status = ','.join(attributes.get('employeeType')) if attributes.get('employeeType') else ''
+    user.byu_status = ','.join(attributes.get('employeeType')) if attributes.get('employeeType') else ''
     user.save()  
 
     # return the user
@@ -48,6 +45,6 @@ class CustomBackend:
   # Required for your backend to work properly - unchanged in most scenarios
   def get_user(self, user_id):
     try:
-      return mmod.SiteUser.objects.get(pk=user_id)
+      return hmod.SiteUser.objects.get(pk=user_id)
     except:
       return None

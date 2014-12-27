@@ -3,7 +3,7 @@ from django.conf import settings
 from django_mako_plus.controller import view_function, RedirectException
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils.safestring import mark_safe
-from management import models as mmod
+from homepage import models as hmod
 from lib.filters import *
 import lib.widgets
 from forum import models as fmod
@@ -17,9 +17,9 @@ def process_request(request):
   params = prepare_params(request)
   
   # handle the form
-  form = ThreadForm()
+  form = ThreadForm(request)
   if request.method == 'POST':
-    form = ThreadForm(request.POST)
+    form = ThreadForm(request, request.POST)
     if form.is_valid():
       thread, comment = create_thread(request.user, form.cleaned_data['topic'], form.cleaned_data['title'], form.cleaned_data['comment'])
       return HttpResponseRedirect('/forum/thread/%s/' % thread.pk)
@@ -36,13 +36,16 @@ class ThreadForm(forms.Form):
   title = forms.CharField(label="Title:", max_length=250, required=True, widget=forms.TextInput(attrs={ 'class': 'form-control' }))
   comment = forms.CharField(label="Comment:", max_length=4000, required=True, widget=forms.Textarea(attrs={  'class': 'form-control', 'style': 'width: 100%; height: 94px;'}))
 
-  def __init__(self, *args, **kwargs):
+  def __init__(self, request, *args, **kwargs):
     super().__init__(*args, **kwargs)
     choices = []
     for topic in fmod.Topic.objects.order_by('sort_order'):
       choices.append(( topic.id, mark_safe('<div class="icon %s"></div><div class="topic_title">%s</div>' % (topic.icon, topic.title)) ))
+      if topic.title == request.urlparams[0]:
+        self.initial['topic'] = topic.id
     self.fields['topic'] = forms.ChoiceField(label="Topic:", required=True, choices=choices, widget=lib.widgets.ButtonChoiceWidget())
-    self.initial['topic'] = choices[0][0]
+    if not self.initial.get('topic'):
+      self.initial['topic'] = choices[0][0]
     
   def clean_topic(self):
     try:

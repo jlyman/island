@@ -1,7 +1,7 @@
 from django.conf import settings
-from . import templater
+from . import templater, prepare_params
 from django_mako_plus.controller import view_function
-from management import models as mmod
+from homepage import models as hmod
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django_mako_plus.controller import view_function
 import datetime
@@ -13,43 +13,43 @@ from django import forms
 @view_function
 def create(request):
   '''Create a task ticket'''
-  if not request.user.is_authenticated():
-    return HttpResponseRedirect('/homepage/cover/')
+  # check user permissions and prepare the params
+  params = prepare_params(request)
 
   # CHECK TO SEE IF TASK TICKET ALREADY EXISTS
   taskID = request.urlparams[0]
-  task = mmod.Task.objects.get(id=taskID)
+  task = hmod.Task.objects.get(id=taskID)
 
   try:
-    taskSteps = mmod.TaskStep.objects.filter(task=task).order_by('sort_order')
-  except mmod.TaskStep.DoesNotExist:
+    taskSteps = hmod.TaskStep.objects.filter(task=task).order_by('sort_order')
+  except hmod.TaskStep.DoesNotExist:
     taskSteps = []
 
   try:
-    ticket = mmod.TaskTicket.objects.get(user=request.user, task=task, start_time__isnull=False, end_time__isnull=True)
-  except mmod.TaskTicket.DoesNotExist:
-    ticket = mmod.TaskTicket()
+    ticket = hmod.TaskTicket.objects.get(user=request.user, task=task, start_time__isnull=False, end_time__isnull=True)
+  except hmod.TaskTicket.DoesNotExist:
+    ticket = hmod.TaskTicket()
     ticket.user = request.user
     ticket.task = task
-    ticket.points = mmod.Task.objects.get(id=taskID).points
+    ticket.points = hmod.Task.objects.get(id=taskID).points
     ticket.save()
 
   now = datetime.datetime.now()
   timediff = now - ticket.start_time
   
-  template_vars = {
-    'ticket': ticket,
-    'timediff_at_page_load': timediff.total_seconds(),
-    'taskSteps': taskSteps,
-  }
-
-  return templater.render_to_response(request, 'task_ticket.create.html', template_vars)
+  params['ticket'] = ticket
+  params['timediff_at_page_load'] = timediff.total_seconds()
+  params['taskSteps'] = taskSteps
+  return templater.render_to_response(request, 'task_ticket.create.html', params)
 
 
 @view_function
 def pre_finish(request):
+  # check user permissions and prepare the params
+  params = prepare_params(request)
+
   ticketID = request.urlparams[0]
-  ticket = mmod.TaskTicket.objects.get(id=ticketID)
+  ticket = hmod.TaskTicket.objects.get(id=ticketID)
   if not request.user.is_authenticated():
     return HttpResponseRedirect('/homepage/cover/')
   form = RatingForm(request.POST or None)
@@ -61,27 +61,25 @@ def pre_finish(request):
       ticket.save()
       return HttpResponseRedirect('/homepage/task_ticket.finish/' + str(ticketID))
 
-  template_vars = {
+  params.update({
     'form': form,
     'ticketID': ticketID,
-  }
+  })
 
   return templater.render_to_response(request, 'rating.html', template_vars)
 
 class RatingForm(forms.Form):
   '''This is a Django login form'''
-
   comment = forms.CharField(required=True, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}))
   rating = forms.ChoiceField(required=True, choices=[(x, x) for x in range (1, 6)], widget=forms.Select(attrs={'class':'form-control'}))
 
 @view_function
 def finish(request):
-  if not request.user.is_authenticated():
-    return HttpResponseRedirect('/homepage/cover/')
+  # check user permissions and prepare the params
+  params = prepare_params(request)
 
-  '''Mark the task ticket as completed'''
   ticketID = request.urlparams[0];
-  ticket = mmod.TaskTicket.objects.get(id=ticketID)
+  ticket = hmod.TaskTicket.objects.get(id=ticketID)
   ticket.end_time = datetime.datetime.now()
   ticket.save()
   user = request.user

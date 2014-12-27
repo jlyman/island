@@ -1,4 +1,4 @@
-<%inherit file="base.htm" />
+<%inherit file="base_template.htm" />
 
 <%block name="content">
 
@@ -17,7 +17,8 @@
 
   <ul class="breadcrumbs">
     <li><a href="/">Island</a></li>
-    <li><a href="/forum/">Threads</a></li>
+    <li><a href="/forum/">Forum</a></li>
+    <li><a href="/forum/index/${ thread.topic.title | u }/">${ thread.topic.title }</a></li>
   </ul>
   
   <h1>

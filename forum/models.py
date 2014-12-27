@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from lib.filters import *
 from jsonfield import JSONField
-from management import models as mmod
+from homepage import models as hmod
 
 
 ######################################################################
@@ -26,10 +26,18 @@ class Topic(models.Model):
     return '%s: %s' % (self.id, self.title)
     
     
+    
+class TopicOptOut(models.Model):
+  '''Contains whether a user is unsubscribed to a topic.  If an object doesn't exist, it means the user is subscribed.'''
+  created = models.DateTimeField(blank=True, null=True, auto_now_add=True)
+  user = models.ForeignKey(hmod.SiteUser)
+  topic = models.ForeignKey(Topic)
+    
+    
 class Thread(models.Model):    
   '''A discussion thread within a topic'''
   created = models.DateTimeField(blank=True, null=True, auto_now_add=True)
-  user = models.ForeignKey(mmod.SiteUser)
+  user = models.ForeignKey(hmod.SiteUser)
   topic = models.ForeignKey(Topic)
   title = models.TextField(blank=True, null=True) 
   options = JSONField(blank=True, null=True)             # Artibrary options - these will never be queryable, but it 
@@ -55,7 +63,7 @@ class Thread(models.Model):
 class Comment(models.Model):
   '''A comment on a thread'''
   created = models.DateTimeField(blank=True, null=True, auto_now_add=True)
-  user = models.ForeignKey(mmod. SiteUser)
+  user = models.ForeignKey(hmod. SiteUser)
   thread = models.ForeignKey(Thread, related_name='comments')
   comment = models.TextField(blank=True, null=True)
   vote = models.IntegerField(default=0)
@@ -77,6 +85,8 @@ class Comment(models.Model):
     if not isinstance(self.options, dict):  # force a dictionary
       self.options = {}
     self.options[name] = value
+    
+    
     
     
 MAX_COMMENT_FILE_SIZE = 10 * 1024 * 1024  # 10 mb   
@@ -105,11 +115,13 @@ class CommentFile(models.Model):
       response['Content-Disposition'] = 'attachment; filename="%s"' % url_escape(self.filename)
     response.write(self.filebytes)
     return response
+ 
     
+
 
 class VoteTicket(models.Model):
   '''A ticket for each thread vote'''
   created = models.DateTimeField(blank=True, null=True, auto_now_add=True)
-  user = models.ForeignKey(mmod.SiteUser)
+  user = models.ForeignKey(hmod.SiteUser)
   comment = models.ForeignKey(Comment)
   points = models.IntegerField(default=0)

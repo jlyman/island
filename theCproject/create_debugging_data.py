@@ -8,18 +8,31 @@ __doc__ = '''
 import init_django
 init_django.initialize()
 
+# ensure we are in debug mode
+from django.conf import settings
+if not settings.DEBUG:
+  raise Exception('Error: you can only run this script in a debugging environment.')
+
 
 # imports
 from lib.filters import *
-from management import models as mmod
+from homepage import models as hmod
 from forum import models as fmod
 import random, datetime
 
 # ensure the user is a staff and superuser
-user = mmod.SiteUser.objects.get(mail='ca@byu.edu')
+user = hmod.SiteUser.objects.get(email='ca@byu.edu')
 user.is_staff = True
 user.is_superuser = True
 user.save()
+
+
+# remove the topics and threads (careful!)
+fmod.CommentFile.objects.all().delete()
+fmod.Comment.objects.all().delete()
+fmod.Thread.objects.all().delete()
+fmod.Topic.objects.all().delete()
+
 
 # add the topics
 for i, (title, icon) in enumerate([

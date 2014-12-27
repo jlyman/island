@@ -40,7 +40,6 @@ DJANGO_APPS = (
 )
 CUSTOM_APPS = (
     'homepage',
-    'management',
     'forum',
 )
 INSTALLED_APPS = DJANGO_APPS + CUSTOM_APPS
@@ -88,7 +87,7 @@ USE_L10N = True
 
 USE_TZ = False
 
-AUTH_USER_MODEL = 'management.SiteUser'
+AUTH_USER_MODEL = 'homepage.SiteUser'
 
 DEBUG_PROPAGATE_EXCEPTIONS = DEBUG
 LOGGING = {

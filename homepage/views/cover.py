@@ -2,23 +2,24 @@ from django import forms
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth import authenticate, login, logout
-from management import models as mmod
+from homepage import models as hmod
 from django.core import validators
 from django.forms import fields, util
 from django.core import exceptions
 from django_mako_plus.controller.router import MakoTemplateRenderer
 from django_mako_plus.controller import view_function
-from . import templater
+from . import templater, prepare_params
 
 
 
 @view_function
 def process_request(request):
-  '''-----------------------------------------------------
-  This function is used to validate username and password
-  when users log in to the system. Specifically, it will 
-  create a form and authenticate against the database
-  ------------------------------------------------------'''
+  '''This function is used to validate username and password
+     when users log in to the system. Specifically, it will 
+     create a form and authenticate against the database
+  '''
+  # check user permissions and prepare the params
+  params = prepare_params(request, require_authenticated=False)
 
   if request.urlparams[0] == 'logout':
     logout(request)

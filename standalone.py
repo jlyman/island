@@ -12,12 +12,12 @@ django.setup()
 
 # imports
 from lib.filters import *
-from management import models as mmod
+from homepage import models as hmod
 from forum import models as fmod
 import random, datetime
 
 # main code
-user = mmod.SiteUser.objects.get(email='ca@byu.edu')
+user = hmod.SiteUser.objects.get(email='ca@byu.edu')
 topic = fmod.Topic.objects.get(pk=1)
 
 # clear out the tables for debugging - careful!

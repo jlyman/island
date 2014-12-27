@@ -3,7 +3,7 @@ from django.conf import settings
 from django_mako_plus.controller import view_function, RedirectException
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils.safestring import mark_safe
-from management import models as mmod
+from homepage import models as hmod
 from forum import models as fmod
 from lib.filters import *
 from lib.tables import TableHeader, ClientSideTable
