@@ -1,7 +1,7 @@
 from django import forms
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.contrib.auth import authenticate, login, logout
+import django.contrib.auth
 from homepage import models as hmod
 from django.core import validators
 from django.forms import fields, util
@@ -21,19 +21,16 @@ def process_request(request):
   # check user permissions and prepare the params
   params = prepare_params(request, require_authenticated=False)
 
-  if request.urlparams[0] == 'logout':
-    logout(request)
-    request.session.flush()
-    return HttpResponseRedirect('/homepage/cover/')
-
+  # forward to the index page if the user is already logged in
   if request.user.is_authenticated():
     return HttpResponseRedirect('/homepage/index/')
 
+  # prepare the login form
   form = LoginForm(request.POST or None)
   if request.method == 'POST':
     form = LoginForm(request.POST)
     if form.is_valid():
-      login(request, form.user)
+      django.contrib.auth.login(request, form.user)
       return HttpResponseRedirect('/homepage/index/')    
 
   template_vars = {
@@ -41,6 +38,7 @@ def process_request(request):
   }
 
   return templater.render_to_response(request, 'cover.html', template_vars)
+
 
 class LoginForm(forms.Form):
   '''This is a Django login form'''
@@ -55,8 +53,23 @@ class LoginForm(forms.Form):
     username = self.cleaned_data.get('username')
     password = self.cleaned_data.get('password')
 
-    self.user = authenticate(ry_username=username, ry_password=password)
+    self.user = django.contrib.auth.authenticate(ry_username=username, ry_password=password)
     if self.user == None:
       raise forms.ValidationError('Incorrect username/password.')
 
     return self.cleaned_data
+    
+    
+    
+@view_function
+def logout(request):
+  # check user permissions and prepare the params
+  params = prepare_params(request, require_authenticated=False)
+
+  django.contrib.auth.logout(request)
+  request.session.flush()
+  
+  if request.urlparams[0] == 'mybyu':
+    return HttpResponseRedirect('https://gamma.byu.edu/ry/ae/prod/person/cgi/personSummary.cgi')
+  return HttpResponseRedirect('/homepage/cover/')
+

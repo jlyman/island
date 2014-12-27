@@ -26,13 +26,27 @@ class Topic(models.Model):
     return '%s: %s' % (self.id, self.title)
     
     
-    
-class TopicOptOut(models.Model):
-  '''Contains whether a user is unsubscribed to a topic.  If an object doesn't exist, it means the user is subscribed.'''
+
+NOTIFICATION_CHOICES = (
+  ( 'none',        'No Email' ),
+  ( 'immediate',   'Immediate Email' ),
+  ( 'daily',       'Daily Batch Email' ),
+  ( 'weekly',      'Weekly Batch Email' ),
+)    
+
+class TopicNotification(models.Model):
+  '''Contains how a user is notified when a new comment is posted to a topic.  If an object doesn't exist, it means the user is subscribed for all content.'''
   created = models.DateTimeField(blank=True, null=True, auto_now_add=True)
   user = models.ForeignKey(hmod.SiteUser)
   topic = models.ForeignKey(Topic)
-    
+  notification = models.TextField(blank=True, null=True, default=NOTIFICATION_CHOICES[1][0])  # defaults to immediate
+  
+  class Meta:
+    unique_together = (
+      ( 'user', 'topic' ),  # prevents more than one of these records ever occuring
+    )
+
+  
     
 class Thread(models.Model):    
   '''A discussion thread within a topic'''

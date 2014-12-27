@@ -1,0 +1,15 @@
+#subscription_table {
+  margin: 12px 0;
+}
+
+#subscription_table td {
+  padding: 6px 12px;
+}
+
+#subscription_table .btn-default:active, 
+#subscription_table .btn-default.active {
+  background-color: #0088CC;
+  color: #FFF;
+  text-shadow: none;
+}
+

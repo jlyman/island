@@ -1,6 +1,16 @@
 
 /************ Bootstrap overrides ***************/
 
+h1 {
+  margin-top: 6px;
+  color: #888;
+}
+
+h2 {
+  font-size: 24px;
+  color: #0088CC;
+}
+
 .table {
   margin-bottom: 0;
 }
@@ -34,6 +44,15 @@
   display: inline-block;
 }
 
+.vertical_spacer {
+  height: 12px;
+}
+
+.vertical_spacer2 {
+  height: 24px;
+}
+
+
 /************** Forms ****************/
 
 ul.errorlist {
@@ -45,8 +64,8 @@ ul.errorlist {
 /************** Breadcrumbs ****************/
 
 ul.breadcrumbs {
-  margin: 0 0 0 108px;
-  padding: 0 0 0 0;
+  margin: 0;
+  padding: 0;
 }
 
 ul.breadcrumbs > li {

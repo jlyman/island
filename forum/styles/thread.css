@@ -44,7 +44,7 @@ h1 .icon {
 /* Comment container structure */
 
 .comment_container {
-  margin: 24px 12px 24px 96px;
+  margin: 24px 0 0 0;
   border: 1px solid #CCC;
   border-radius: 4px;
   background-color: #fff;

@@ -1,5 +1,36 @@
+<%! from forum import models as fmod %>
+
 <%inherit file="base_template.htm" />
 
 <%block name="content">
+  <h1>My Account</h1>
+
+
+  <h2>Personal Information</h2>
+
+  <p>
+    Personal information, such as name, email, and picture are managed by BYU and should be changed there.
+    After changing your information with BYU, simply re-login to Island.  Your account here will be
+    automatically updated.
+  </p>
+  <p class="text-center">
+    <a href="/homepage/cover.logout/mybyu/" class="btn btn-warning">Change My Personal Information</a>
+  </p>
+
+
+  <h2>Forum Notifications</h2>
   
+  Click the following buttons to manage your subscriptions to the forum topics.  Note that daily batch email and weekly batch email is not yet supported (coming soon!).
+  <div class="vertical_spacer"></div>
+  
+  <div class="text-center">
+    <form method="POST">
+      <table id="subscription_table" class="inline-block">
+        ${ notification_form.as_table() }
+      </table>
+      <div class="text-center"><button type="submit" class="btn btn-primary">Save Changes</button></div>
+    </form>
+  </div><!-- text-center -->
+  
+
 </%block>
