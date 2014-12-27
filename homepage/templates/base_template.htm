@@ -1,0 +1,126 @@
+## this is the skeleton of all pages on in this app - it defines the basic html tags
+
+## set up a StaticRenderer object to enable the CSS/JS automatic inclusion magic.
+<%! from django_mako_plus.controller import static_files %>
+<%! from forum import models as fmod %>
+<%  static_renderer = static_files.StaticRenderer(self) %>
+
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8">
+  <head>
+    
+    <title>Homepage</title>
+    
+    ## js file for every page of the site
+    <script src="/static/homepage/scripts/jQuery.js"></script>
+    <script src="/static/homepage/scripts/bootstrap.js"></script>
+    <script src="/static/homepage/scripts/jquery.woomark.js"></script>
+    <script src="/static/homepage/scripts/jquery.powertimer.js"></script>
+    <script src="/static/homepage/scripts/jquery.classysocial.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script src="/static/homepage/scripts/custom.js"></script>
+    <script src="/static/homepage/scripts/jquery_form.js"></script>
+    <script src="/static/homepage/scripts/loadModal.js"></script>
+
+    ## css files for every page of the site
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/bootstrap-theme.css">
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/dashboard.css">
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/top-menu.css">
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/jquery.classysocial.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/custom.css">
+    ## our font set
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/icomoon-fonts/icomoon-iconset.css">
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/icomoon-customizations.css">
+    
+    ## render the css with the same name as this page
+    ${ static_renderer.get_template_css(request, context)  }
+  
+  </head>
+  <body>
+
+    <div id="main_content">
+      <nav>
+        <ul class="menu">
+          <li style="padding-top: 3px; text-align: center; background-color: white;"><img src="/static/homepage/media/image/task/logo.png" width="90%" height="100%" /></li>
+          <li class="home current"><a href="/homepage/index/"><div class="icon icon_home2 icon_color_white" aria-label="Home"></div></a></li>
+          <li><a href="/homepage/profile/"><span>My Service</span></a></li>
+          <li><a href="/forum/index/"><span>Forum</span></a>
+            <ul class="sub-menu">
+              %for title in fmod.Topic.objects.order_by('sort_order').values_list('title', flat=True):
+                <li><a href="/forum/index/${ title | u }/">${ title }</a></li>
+              %endfor
+            </ul>
+          </li>
+          <li><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><span>Something</span></a></li>
+          <li><a href="/homepage/account/"><span>Account</span></a></li>
+        </ul>
+      </nav>
+      <form class="navbar-form" role="search" style="width: 40%; float: right;">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
+            <div class="input-group-btn">
+                <button class="btn btn-default" type="submit"><div class="icon icon_search3" aria-label="Search3" style="font-size: 14px; margin-top: -3px;"></div></button>
+            </div>
+        </div>
+      </form>
+
+      <br/>
+      <br/>
+      <%block name="content">
+        Site content goes here in sub-templates.
+      </%block>  
+      <br/>
+      <br/>
+      <div id="footer">
+        <div class="container">
+          <p class="text-muted">BYU Department of Information Systems</p>
+        </div>
+      </div>
+    </div>
+    
+    <div id="right_bar">
+      %if request.user.is_authenticated():
+        <header style="height: 115px;">
+            <img src="/static/homepage/media/image/ironman.jpeg" height="40px"/>
+            <div class="btn btn-default" style="text-align: left; cursor: initial;">
+              ${request.user.username}
+              <br/>
+              <a href="/homepage/profile/">View Profile</a>
+              <br/>
+              <a href="/homepage/cover/logout">Logout</a>
+            </div>
+        </header>
+      %endif
+      <div style="background-color: #3E454D; border-top: 1px solid #ffffff;">
+        <br/>
+        <ul class="nav nav-sidebar">
+          <li class="nav-title"><a href="/forum/index/Jobs/">Job Postings</a></li>
+          %for thread in latest_jobs[:3]:
+            <li><a href="/forum/thread/${ thread.id }/"><div class="icon ${ thread.topic.icon } icon_color_white"></div>&nbsp; ${ thread.title | h }</a></li>
+          %endfor
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li class="nav-title"><a href="/forum/index/">Latest Threads</a></li>
+          %for thread in latest_threads[:5]:
+            <li><a href="/forum/thread/${ thread.id }/"><div class="icon ${ thread.topic.icon } icon_color_white"></div>&nbsp; ${ thread.title | h }</a></li>
+          %endfor
+        </ul>
+      </div>
+
+      <div class="classysocial"  style="position:absolute; bottom: 0px; left: 10%;"
+        data-orientation="line" 
+        data-arc-length="360" data-image-type="picture" 
+        data-picture="/static/homepage/media/image/classysocial/default/share_core_square.jpg" data-facebook-handle="picozu" 
+        data-twitter-handle="picozu_editor" 
+        data-email-handle="island@byu.edu"
+        data-networks="facebook,twitter,email">
+      </div>
+    </div>
+  
+    ## render the JS with the same name as this page
+    ${ static_renderer.get_template_js(request, context)  }
+  
+  </body>
+</html>
