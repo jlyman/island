@@ -22,6 +22,9 @@
     <script src="/static/homepage/scripts/custom.js"></script>
     <script src="/static/homepage/scripts/jquery_form.js"></script>
     <script src="/static/homepage/scripts/loadModal.js"></script>
+    <script src="/static/homepage/scripts/base64.js"></script>
+    <script src="/static/homepage/scripts/ckeditor/ckeditor.js"></script>
+    <script src="/static/homepage/scripts/ckeditor/adapters/jquery.js"></script>
 
     ## css files for every page of the site
     <link rel="stylesheet" type="text/css" href="/static/homepage/styles/bootstrap.css">
@@ -48,8 +51,8 @@
           <li><a href="/homepage/profile/"><span>My Service</span></a></li>
           <li><a href="/forum/index/"><span>Forum</span></a>
             <ul class="sub-menu">
-              %for title in fmod.Topic.objects.order_by('sort_order').values_list('title', flat=True):
-                <li><a href="/forum/index/${ title | u }/">${ title }</a></li>
+              %for key, title in fmod.Topic.objects.order_by('sort_order').values_list('key', 'title'):
+                <li><a href="/forum/index/${ key }/">${ title }</a></li>
               %endfor
             </ul>
           </li>

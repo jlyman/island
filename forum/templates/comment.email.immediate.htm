@@ -1,0 +1,48 @@
+##  This is the email that goes out when a new comment is posted on a thread.
+##  See thread.py for the caller.
+
+
+
+<%block name="email_to_block">
+  ${ to_name } <${ to_email }>
+</%block>
+
+
+<%block name="email_from_block">
+  ${ topic_key }@island.byu.edu
+</%block>
+
+
+<%block name="email_subject_block">
+	${ subject }
+</%block>
+
+
+<%block name="email_text_block">
+</%block>
+
+
+<%block name="email_html_block">
+  <style type="text/css">
+    p.island_stuff {
+      color: #888; 
+      font-family: sans-serif;
+      font-size: 14px;
+      margin-top: 24px;
+    }
+  </style>
+
+  ${ comment }
+  
+  <p class="island_stuff">
+    <div>This email was sent from <a href="https://island.byu.edu/homepage/account/">https://island.byu.edu/</a></div>.
+    <div>
+      You can unsubscribe from 
+      <a href="https://island.byu.edu/homepage/account.unsubscribe/${ topic_key }/">${ topic_title } emails</a> 
+      or from 
+      <a href="https://island.byu.edu/homepage/account.unsubscribe/all/">all Island emails</a>.
+    </div>
+  </p>
+  
+</%block>
+

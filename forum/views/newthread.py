@@ -6,7 +6,9 @@ from django.utils.safestring import mark_safe
 from homepage import models as hmod
 from lib.filters import *
 import lib.widgets
+from lib.ckeditor import ckEditorWidget
 from forum import models as fmod
+from forum.views.thread import send_comment_email_immediate
 from . import templater, prepare_params
 
 
@@ -22,10 +24,12 @@ def process_request(request):
     form = ThreadForm(request, request.POST)
     if form.is_valid():
       thread, comment = create_thread(request.user, form.cleaned_data['topic'], form.cleaned_data['title'], form.cleaned_data['comment'])
+      send_comment_email_immediate(request, comment)
       return HttpResponseRedirect('/forum/thread/%s/' % thread.pk)
 
   # render the template
   params['form'] = form
+  params['starters'] = [ (topic.id, encode64(topic.starter)) for topic in fmod.Topic.objects.all() ]
   return templater.render_to_response(request, 'newthread.html', params)
   
   
@@ -34,10 +38,12 @@ class ThreadForm(forms.Form):
   '''Form to post new thread'''
   topic = forms.ChoiceField() # recreated with choices in constructor
   title = forms.CharField(label="Title:", max_length=250, required=True, widget=forms.TextInput(attrs={ 'class': 'form-control' }))
-  comment = forms.CharField(label="Comment:", max_length=4000, required=True, widget=forms.Textarea(attrs={  'class': 'form-control', 'style': 'width: 100%; height: 94px;'}))
+  comment = forms.CharField()
+  
 
   def __init__(self, request, *args, **kwargs):
     super().__init__(*args, **kwargs)
+    self.fields['comment'] = forms.CharField(label="", max_length=4000, required=True, widget=ckEditorWidget(request, toolbar='be_small', attrs={ 'style': 'height: 250px;' }))
     choices = []
     for topic in fmod.Topic.objects.order_by('sort_order'):
       choices.append(( topic.id, mark_safe('<div class="icon %s"></div><div class="topic_title">%s</div>' % (topic.icon, topic.title)) ))

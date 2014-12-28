@@ -20,7 +20,9 @@ class Topic(models.Model):
   created = models.DateTimeField(blank=True, null=True, auto_now_add=True)
   sort_order = models.IntegerField(blank=True, null=True)
   title = models.TextField(blank=True, null=True)
+  key = models.TextField(blank=True, null=True)   # a shortened version of the title (without spaces, uppercase, etc.)
   icon = models.TextField(blank=True, null=True)
+  starter = models.TextField(blank=True, null=True)  # used when creating new threads
   
   def __str__(self):
     return '%s: %s' % (self.id, self.title)

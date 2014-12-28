@@ -54,6 +54,9 @@ def get_fake_request(meta):
 def prepare_fake_meta(request, include_body=False):
   '''Removes any values in the dictionary that can't be serialized.  This is done in preparation for sending
      the request.META to a celery task.'''
+  if request == None:
+    return {}
+    
   meta = dict([ (k,v) for k,v in request.META.items() if isinstance(v, JSON_SERIALIZABLE) ])
      
   # save the body so we can make it the input when getting the fake request

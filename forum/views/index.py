@@ -17,7 +17,16 @@ def process_request(request):
   # check user permissions and prepare the params
   params = prepare_params(request)
   
+  # see if we have a filter by topic
+  topic = None
+  if request.urlparams[0]:
+    try:
+      topic = fmod.Topic.objects.get(key=request.urlparams[0])
+    except fmod.Topic.DoesNotExist:
+      pass
+  
   # render the template
+  params['topic'] = topic
   params['table_html'] = get_table(request, as_response=False)
   return templater.render_to_response(request, 'index.html', params)
   
@@ -32,13 +41,13 @@ def get_table(request, as_response=True):
   topic = None
   if request.urlparams[0]:
     try:
-      topic = fmod.Topic.objects.get(title=request.urlparams[0])
+      topic = fmod.Topic.objects.get(key=request.urlparams[0])
     except fmod.Topic.DoesNotExist:
       pass
   
   # query the threads and prepare the table
   table = ThreadTable(request)
-  table.endpoint_url = '/forum/index.get_table/%s' % url_escape(topic.title) if topic else ''
+  table.endpoint_url = '/forum/index.get_table/%s' % topic.key if topic else ''
   threads_query = fmod.Thread.objects.order_by('-created')
   if topic:
     threads_query = threads_query.filter(topic=topic)

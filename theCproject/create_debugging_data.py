@@ -20,22 +20,22 @@ from homepage import models as hmod
 from forum import models as fmod
 import random, datetime
 
+# add a few test users
+# for info in [
+#   ( 'user1', 'doconix@gmail.com', 'Conan2 Albrecht' ),
+#   ( 'user2', 'conan_albrecht@byu.edu', 'Conan3 Albrecht'),
+# ]:
+#   user = hmod.SiteUser()
+#   user.username = info[0]
+#   user.email = info[1]
+#   user.fullname = info[2]
+#   user.save()
+
 # ensure the main user (Conan or Thong) is a staff and superuser
 user = hmod.SiteUser.objects.get(email='ca@byu.edu')
 user.is_staff = True
 user.is_superuser = True
 user.save()
-
-# add a few test users
-for info in [
-  ( 'user1', 'doconix@gmail.com', 'Conan2 Albrecht' ),
-  ( 'user2', 'conan_albrecht@byu.edu', 'Conan3 Albrecht'),
-]:
-  user = hmod.SiteUser()
-  user.username = info[0]
-  user.email = info[1]
-  user.fullname = info[2]
-  user.save()
 
 # remove the topics and threads (careful!)
 fmod.Comment.objects.all().delete()
@@ -43,19 +43,52 @@ fmod.Thread.objects.all().delete()
 fmod.Topic.objects.all().delete()
 
 
+SALE_STARTER = '''
+<p>Item:</p>
+
+<p>Price:</p>
+
+<p>Description:</p>
+
+<p>Contact Name:</p>
+
+<p>Contact Number:</p>
+
+<p>Contact Email:</p>
+'''.strip()
+
+JOBS_STARTER = '''
+<p>Type: (part-time / consulting / full-time career)</p>
+
+<p>Wage: (also specify whether hourly/salary/etc.)</p>
+
+<p>Description:</p>
+
+<p>Company:</p>
+
+<p>Contact Name:</p>
+
+<p>Contact Number:</p>
+
+<p>Contact Email:</p>
+'''.strip()
+
+
 # add the topics
-for i, (title, icon) in enumerate([
-  ( 'Tech', 'icon_archive' ),
-  ( 'Non-Tech', 'icon_bubble13' ),
-  ( 'IS Core', 'icon_library2' ),
-  ( 'Help',  'icon_support' ),
-  ( 'Sale', 'icon_tag7' ),
-  ( 'Jobs', 'icon_coins' ),
+for i, (key, title, icon, starter) in enumerate([
+  ( 'tech', 'Tech', 'icon_archive', '' ),
+  ( 'nontech', 'Non-Tech', 'icon_bubble13', '' ),
+  ( 'iscore', 'IS Core', 'icon_library2', '' ),
+  ( 'help', 'Help',  'icon_support', '' ),
+  ( 'sale', 'Sale', 'icon_tag7', SALE_STARTER ),
+  ( 'jobs', 'Jobs', 'icon_coins', JOBS_STARTER ),
 ]):
   topic = fmod.Topic()
   topic.sort_order = i
+  topic.key = key
   topic.title = title
   topic.icon = icon
+  topic.starter = starter
   topic.save()
 
 # add new threads and comments

@@ -6,7 +6,7 @@
     <li><a href="/">Island</a></li>
     <li><a href="/forum/">Forum</a></li>
   </ul>
-  <h1>${ request.urlparams[0] or 'All Topics' }</h1>
+  <h1>${ topic.title if topic != None else 'All Topics' }</h1>
   
 
     
