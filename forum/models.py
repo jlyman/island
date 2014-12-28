@@ -74,6 +74,9 @@ class Thread(models.Model):
     self.options[name] = value
     
     
+MAX_COMMENT_FILE_SIZE = 10 * 1024 * 1024  # 10 mb   
+MAX_NUM_COMMENT_FILES = 4  # 4 files per comment
+    
 class Comment(models.Model):
   '''A comment on a thread'''
   created = models.DateTimeField(blank=True, null=True, auto_now_add=True)
@@ -81,6 +84,7 @@ class Comment(models.Model):
   thread = models.ForeignKey(Thread, related_name='comments')
   comment = models.TextField(blank=True, null=True)
   vote = models.IntegerField(default=0)
+  files = models.ManyToManyField('homepage.UploadedFile')
   options = JSONField(blank=True, null=True)             # Artibrary options - these will never be queryable, but it 
                                                          # keeps us from constantly changing the database just to store a new option.
                                                          # See set_option and get_option below.
@@ -103,35 +107,6 @@ class Comment(models.Model):
     
     
     
-MAX_COMMENT_FILE_SIZE = 10 * 1024 * 1024  # 10 mb   
-MAX_NUM_COMMENT_FILES = 4  # 4 files per comment
-    
-class CommentFile(models.Model):
-  '''A file attached to a Comment. We store attached files directly in the database because it's much simpler
-     (conceptually) that way.  This is not a high-traffic site, and it doesn't need the higher throughput of
-     storing the files on the filesystem.  Very few comments have files attached, so we're doing what most would 
-     say is a bad idea. :)  We can always switch it in the future if it becomes an issue.'''
-  created = models.DateTimeField(blank=True, null=True, auto_now_add=True)
-  comment = models.ForeignKey(Comment)
-  filename = models.TextField(blank=True, null=True)
-  contenttype = models.TextField(blank=True, null=True)
-  size = models.IntegerField()
-  filebytes = models.BinaryField(blank=True, null=True)
-  
-  def __str__(self):
-    return 'CommentFile: %s (%s), %s bytes' % (self.filename, self.contenttype, self.size)
-    
-
-  def get_response(self, attachment=True):
-    '''Returns an HttpResponse that downloads this file.'''   
-    response = HttpResponse(content_type=self.contenttype)
-    if attachment:
-      response['Content-Disposition'] = 'attachment; filename="%s"' % url_escape(self.filename)
-    response.write(self.filebytes)
-    return response
- 
-    
-
 
 class VoteTicket(models.Model):
   '''A ticket for each thread vote'''

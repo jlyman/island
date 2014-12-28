@@ -8014,12 +8014,13 @@ try:
   
   # add any attachments
   for cid, filename, contenttype, filebytes in attachments:
-    cf = fmod.CommentFile(comment=comment)
+    cf = hmod.UploadedFile()
     cf.filename = filename
     cf.contenttype = contenttype
     cf.size = len(filebytes)
     cf.filebytes = filebytes
     cf.save()
+    comment.files.add(cf)
   
   # signal to exim that we have success
   sys.exit(0)

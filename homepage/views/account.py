@@ -38,7 +38,7 @@ class NotificationForm(forms.Form):
     # add the topics as fields
     for topic in fmod.Topic.objects.order_by('sort_order'):
       self.fields['field%s' % topic.id] = forms.ChoiceField(label=topic.title, required=True, choices=fmod.NOTIFICATION_CHOICES, widget=lib.widgets.ButtonChoiceWidget(btn_class="btn btn-default btn-sm", attrs={ 'class': "btn-group", 'role': "group" }))
-      self.initial['field%s' % topic.id] = 'immediate'
+      self.initial['field%s' % topic.id] = 'immediate'  # users don't necessarily have TopicNotification objects -- only if they have saved this form.  No object for a user means immediate.
       tn = tns.get(topic.id)
       if tn != None:
         self.initial['field%s' % topic.id] = tn.notification

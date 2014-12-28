@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser     
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 
 #####################################################################
 ###   User models
@@ -33,6 +34,7 @@ class SiteUser(AbstractUser):
 
   def __str__(self):
     return '%s: %s' % (self.id, self.fullname)
+
 
 
     
@@ -73,3 +75,32 @@ class TaskTicket(models.Model):
 
   def __str__(self):
     return '%s: %s' % (self.id)
+
+
+
+
+#####################################################################
+###   File Uploads
+
+class UploadedFile(models.Model):
+  '''A file stored in the DB. We are storing files directly in the database because it's much simpler
+     (conceptually) that way.  This is not a high-traffic site, and it doesn't need the higher throughput of
+     storing the files on the filesystem.  Very few comments have files attached, so we're doing what most would 
+     say is a bad idea. :)  We can always switch it in the future if it becomes an issue.'''
+  created = models.DateTimeField(blank=True, null=True, auto_now_add=True)
+  filename = models.TextField(blank=True, null=True)
+  contenttype = models.TextField(blank=True, null=True)
+  size = models.IntegerField()
+  filebytes = models.BinaryField(blank=True, null=True)
+  
+  def __str__(self):
+    return 'DatabaseFile: %s (%s), %s bytes' % (self.filename, self.contenttype, self.size)
+
+  def get_response(self, attachment=True):
+    '''Returns an HttpResponse that downloads this file.'''   
+    response = HttpResponse(content_type=self.contenttype)
+    if attachment:
+      response['Content-Disposition'] = 'attachment; filename="%s"' % url_escape(self.filename)
+    response.write(self.filebytes)
+    return response
+ 

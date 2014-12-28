@@ -1,10 +1,13 @@
 from django import forms
 from django.conf import settings
 from django.db.models import Sum
+from django.db.models import Q
 from django_mako_plus.controller import view_function, RedirectException
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from homepage import models as hmod
 from lib.filters import *
+from lib import get_fake_request, prepare_fake_meta
+from lib.mailer import send_html_mail
 from forum import models as fmod
 from . import templater, prepare_params
 
@@ -27,17 +30,24 @@ def process_request(request):
   if request.method == 'POST':
     comment_form = CommentForm(request.POST, request.FILES)
     if comment_form.is_valid():
+      # create the comment, and add any files
       comment = fmod.Comment(user=request.user, thread=thread)
       comment.comment = comment_form.cleaned_data['comment'].replace('\r\n', '<br/>').replace('\n', '<br/>')
       comment.save()
       if comment_form.cleaned_data['file1']:
-        cf = fmod.CommentFile(comment=comment)
+        cf = hmod.UploadedFile()
         cf.filename = comment_form.cleaned_data['file1'].name
         cf.contenttype = comment_form.cleaned_data['file1'].content_type
         cf.size = comment_form.cleaned_data['file1'].size
         cf.filebytes = comment_form.cleaned_data['file1'].read()
         cf.save()
-      return HttpResponseRedirect('/forum/thread/%s#comment_%s' % (thread.pk, comment.pk))  # redirect so the user doesn't accidentally post again by hitting refresh
+        comment.files.add(cf)
+        
+      # send the emails
+      send_comment_email_immediate(request, comment)
+      
+      # forward to the comment so we don't get a double post on reload
+#      return HttpResponseRedirect('/forum/thread/%s#comment_%s' % (thread.pk, comment.pk))  # redirect so the user doesn't accidentally post again by hitting refresh
   
   # render the template
   params['comment_form'] = comment_form
@@ -52,12 +62,7 @@ class CommentForm(forms.Form):
   file1 = forms.FileField(label="Attach a File:", required=False)
 
   
-  
-  
-def send_email_for_comment(comment):
-  '''Sends email out for a given comment'''
-  pass  
-  
+
   
 #####################################################
 ###   Ajax endpoint to vote on a comment
@@ -96,9 +101,37 @@ def attachment(request):
 
   # get the cf
   try:
-    cf = fmod.CommentFile.objects.get(id=request.urlparams[0])
-  except (ValueError, fmod.CommentFile.DoesNotExist):
+    cf = hmod.UploadedFile.objects.get(id=request.urlparams[0])
+  except (ValueError, hmod.UploadedFile.DoesNotExist):
     raise Http404
     
   # return the response
   return cf.get_response(attachment=request.urlparams[1] != 'inline')
+
+
+
+
+
+
+#############################################
+###   Sends notifications for new comments
+  
+def send_comment_email_immediate(request, comment):
+  '''Sends email out for a given comment'''
+  # we pull anyone without a TN object or those with explicit "immediate" for this topoic
+  params_list = []
+  for user in hmod.SiteUser.objects.filter(Q(topicnotification__isnull=True) | Q(topicnotification__topic=comment.thread.topic, topicnotification__notification='immediate')):
+    params_list.append({
+      'to_name': user.fullname,
+      'to_email': user.email,
+      'subject': comment.thread.title,
+      'comment': comment.comment,
+    })
+  
+  # call the html mailer with the params list and our email template
+  # this needs to be switched to a celery call so it runs offline
+  send_html_mail(prepare_fake_meta(request), 'forum', 'comment.email.immediate.htm', [ cf.id for cf in comment.files.all() ], params_list)
+    
+  
+    
+  

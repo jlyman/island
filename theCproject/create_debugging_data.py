@@ -20,15 +20,24 @@ from homepage import models as hmod
 from forum import models as fmod
 import random, datetime
 
-# ensure the user is a staff and superuser
+# ensure the main user (Conan or Thong) is a staff and superuser
 user = hmod.SiteUser.objects.get(email='ca@byu.edu')
 user.is_staff = True
 user.is_superuser = True
 user.save()
 
+# add a few test users
+for info in [
+  ( 'user1', 'doconix@gmail.com', 'Conan2 Albrecht' ),
+  ( 'user2', 'conan_albrecht@byu.edu', 'Conan3 Albrecht'),
+]:
+  user = hmod.SiteUser()
+  user.username = info[0]
+  user.email = info[1]
+  user.fullname = info[2]
+  user.save()
 
 # remove the topics and threads (careful!)
-fmod.CommentFile.objects.all().delete()
 fmod.Comment.objects.all().delete()
 fmod.Thread.objects.all().delete()
 fmod.Topic.objects.all().delete()

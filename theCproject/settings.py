@@ -134,6 +134,24 @@ STATICFILES_DIRS = (
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')  
 
+
+AUTHENTICATION_BACKENDS = ( 
+    'theCproject.auth_backend.custom_auth_backend.CustomBackend', 
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+
+###################################
+###   Email settings
+###   For debugging, run "python3 -m smtpd -n -c DebuggingServer localhost:1025"
+
+EMAIL_HOST = 'warp.byu.edu'
+EMAIL_PORT = 25
+
+#EMAIL_HOST = 'localhost'
+#EMAIL_PORT = 1025
+
+
 ###############################################################
 ###   Specific settings for the Django-Mako-Plus app
 # the default app/templates/ directory is always included in the template search path
@@ -168,9 +186,4 @@ DMP_MINIFY_JS_CSS = True
 
 ###  End of settings for the base_app Controller
 ################################################################
-
-AUTHENTICATION_BACKENDS = ( 
-    'theCproject.auth_backend.custom_auth_backend.CustomBackend', 
-    'django.contrib.auth.backends.ModelBackend',
-)
 
