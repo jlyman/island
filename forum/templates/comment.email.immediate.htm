@@ -24,25 +24,31 @@
 
 <%block name="email_html_block">
   <style type="text/css">
-    p.island_stuff {
-      color: #888; 
-      font-family: sans-serif;
-      font-size: 14px;
-      margin-top: 24px;
-    }
+      p.island_divider {
+        margin: 24px 0 0 0;
+        color: #888; 
+        font-family: sans-serif;
+        font-size: 14px;
+      }
+      p.island_footer {
+        color: #888; 
+        font-family: sans-serif;
+        font-size: 14px;
+        margin: 3px 0 3px 0;
+      }
+      p.island_footer > a {
+        text-decoration: none;
+        color: #0088CC;
+      }
   </style>
 
   ${ comment }
   
-  <p class="island_stuff">
-    <div>This email was sent from <a href="https://island.byu.edu/homepage/account/">https://island.byu.edu/</a></div>.
-    <div>
-      You can unsubscribe from 
-      <a href="https://island.byu.edu/homepage/account.unsubscribe/${ topic_key }/">${ topic_title } emails</a> 
-      or from 
-      <a href="https://island.byu.edu/homepage/account.unsubscribe/all/">all Island emails</a>.
-    </div>
-  </p>
+
+  <p class="island_divider">-- </p>
+  <p class="island_footer">This email was sent from <a href="https://island.byu.edu/homepage/account/">https://island.byu.edu/</a>.</p>
+  <p class="island_footer">You can unsubscribe from <a href="https://island.byu.edu/homepage/account.unsubscribe/${ topic_key }/">${ topic_title } emails</a> or from <a href="https://island.byu.edu/homepage/account.unsubscribe/all/">all Island emails</a>.</p>
+  
   
 </%block>
 

@@ -58,7 +58,6 @@ def send_html_mail(meta, app, template, upload_file_ids, params_list, email_head
     subject = templater.render(request, template, params, def_name='email_subject_block').strip()
     html_body = templater.render(request, template, params, def_name='email_html_block').strip()
     text_body = templater.render(request, template, params, def_name='email_text_block').strip()
-    message_id = templater.render(request, template, params, def_name='email_message_id').strip()
     
     # if the text_body is empty, created it from the html_body
     if not text_body:
@@ -68,11 +67,9 @@ def send_html_mail(meta, app, template, upload_file_ids, params_list, email_head
       text_body = lxml.html.fromstring(text).text_content()
       
     # create the mail message object
-    msg = EmailMultiAlternatives(subject, text_body, from_address, [ to_address ])
+    msg = EmailMultiAlternatives(subject, text_body, from_address, [ to_address ], headers=email_headers)
     msg.mixed_subtype = 'related'  # tells mail clients to not show attachments if they are referenced inline (otherwise we see double images)
     msg.attach_alternative(html_body, 'text/html')
-    if message_id:
-      msg.add_header('Message-ID', message_id)
       
     # add any attachments
     for upload_file_id in upload_file_ids:
