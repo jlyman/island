@@ -23,7 +23,7 @@ RSYNC_OPTIONS = [
 
 # set up the destination
 DEST_USER = 'root'
-DEST_HOST = 'warp.byu.edu'
+DEST_HOST = 'island.byu.edu'
 DEST_DIR = '/var/island/thecproject/'
 
 # ensure the user really wants to do this
@@ -38,6 +38,18 @@ if areyousure.lower() != 'y':
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'theCproject.settings')
 import manage  # sets up the settings environment var
 from django.conf import settings
+
+
+######################################################################################################################
+###   Function the settings file between debug and non-debug mode
+
+def replace_in_file(filepath, old_st, new_st):
+  contents = open(filepath, 'r').read()
+  assert contents.find(old_st) >= 0, 'Could not find the %s line in settings.  Aborting.' % old_st
+  f = open(filepath, 'w')
+  f.write(contents.replace(old_st, new_st))
+  f.close()
+  
 
 
 ######################################################################################################################
@@ -68,11 +80,18 @@ for cmd in [
 print("Stopping web server...")
 os.system('''ssh %s@%s "/etc/init.d/nginx stop; /etc/init.d/uwsgi stop;"''' % (DEST_USER, DEST_HOST))
 
+# switch the settings file to non-debug mode
+settings_path = os.path.join(settings.BASE_DIR, 'theCproject', 'settings.py')
+replace_in_file(settings_path, 'DEBUG = True', 'DEBUG = False')
+
 # copy over everything
 print('Comparing and copying files to the server...')
 cmd = 'rsync %s %s %s@%s:%s' % (' '.join(RSYNC_OPTIONS), os.path.join(settings.BASE_DIR, '*'), DEST_USER, DEST_HOST, DEST_DIR)
 print(cmd)
 os.system(cmd)
+
+# switch settings back to debug mode
+replace_in_file(settings_path, 'DEBUG = False', 'DEBUG = True')
 
 # erase the *.pyc files and template_cache so python/Mako recompiles everything on the web site
 print('Emptying the dev server caches...')

@@ -1,9 +1,59 @@
 <%inherit file="base_template.htm" />
 
 <%block name="content">
+
+  <div class="vertical_spacer2"></div>
+  <div class="vertical_spacer2"></div>
+  <div class="text-center">
+    <a class="btn btn-lg btn-primary" href="/forum/index/">Go to Email Lists &rarr;</a>
+  </div>
+  
+  <div class="vertical_spacer2"></div>
+  <h1>Welcome to Island 2.0!</h1>
+  <div id="welcome">
+    <p>
+      You may be wondering why we created a new version of Island.  The goal
+      of the rewrite was to <b>better connect our alumni and students</b>.  We also had several secondary
+      goals as well.  The following lists many of the changes you'll see:
+      <ol>
+        <li><b>A new "My Service" area is the big upgrade</b>.  In the future, this page will list ways that you 
+            can give back to the IS degree, even if you only have 15 minutes to spare.  Service opportunities will be posted often, 
+            and they will include things like reviewing a few student resumes, answering student questions, reading/contributing to the newsletter,
+            contributing to the forum topics, reviewing class curriculum, coding on the site, etc. We'll connect it to the AIS 
+            club service activities. 
+            <br/><br/>
+            As you complete service activities, you'll be awarded points for your work.  We have levels that you can achieve
+            as you earn points.  In short, we hope to 1) gamify the service process, and 2) make it easy for you to contribute in small
+            time blocks.
+            <br/>&nbsp;
+        </li>  
+        <li>The <b>email lists are still present in the new site</b>, but we've shrunk the topics a few general, manageable lists.  The large number of lists
+            in the old site never really worked the way we had hoped -- people didn't know which list to post to (or just didn't care :).  
+            Most simply emailed the two
+            primary lists, even though focused lists might have been better for their topic.  
+            <br/><br/>
+            The new site simply has tech, non-tech,
+            jobs, iscore, help, and sale.  You can still unsubscribe from any of the topics, and the emails allow unsubscribing 
+            from a given thread or entire topics.
+            <br/>&nbsp;
+        </li>
+        <li>The look and feel has been updated with <b>modern CSS frameworks</b> like Bootstrap.
+          <br/>&nbsp;
+        </li>
+        <li>The new site is written in Django--which all of you learn in IS 413.  Since we all know Django,
+            <b>we can fix and upgrade the site together</b>.  We'll be posting it to GitHub shortly.            
+            <br/>&nbsp;
+        </li>
+      </ol>
+    </p>
+  </div>
+
+  <div class="vertical_spacer2"></div>
+  <h1>Service Opportunities</h1>
+  <div class="vertical_spacer2"></div>
   <div id="image-container">
     <ul id="tiles">
-      %if tasks:
+      %if tasks and len(tasks) > 0:
         %for task in tasks:
           <li class="img-li"><a href="/homepage/detail/${task.id}">
             <h2 style="text-align: center;">${task.name}</h2>
@@ -14,7 +64,21 @@
             </div>
           </li>
         %endfor
+      %else:
+        <li class="img-li"><a>
+          <h2 style="text-align: center;">Service</h2>
+          <img src="${ STATIC_URL }homepage/media/image/task/task_2.png" width="210px" height="210px"/></a>
+          <div class="thumbnail-info"> 
+            No service tasks have been posted for today.<br/>
+            Please check back later.
+          </div>
+        </li>
       %endif
     </ul>
   </div>
+  
+  <div class="vertical_spacer2"></div>
+  <div class="vertical_spacer2"></div>
+  <div class="vertical_spacer2"></div>
+  <div class="vertical_spacer2"></div>
 </%block>

@@ -13,6 +13,8 @@ import sys, os, re, email.parser
 # initializes django
 import init_django
 init_django.initialize()
+
+# regular imports
 from homepage import models as hmod
 from forum import models as fmod
 from forum.views.newthread import create_thread
@@ -155,12 +157,23 @@ try:
     cf.save()
     comment.files.add(cf)
     
+  # prepare some fake meta
+  meta = {
+   'HTTP_HOST': 'island.byu.edu',
+   'QUERY_STRING': '',
+   'REMOTE_ADDR': '127.0.0.1',
+   'REMOTE_PORT': '0',
+   'REQUEST_METHOD': 'GET',
+  }
+    
   # send the emails
-  send_comment_email_immediate(None, comment)
+  send_comment_email_immediate(meta, comment)
   
   # signal to exim that we have success
   sys.exit(0)
 
-except Exception as e:
-  print(e)  # exim accepts this as the error to send back to the user
+except Exception as exc:
+  exc_info = (type(exc), exc, exc.__traceback__)
+  log.warning('Error: %s' % exc, exc_info=exc_info)
+  print(str(exc))  # exim accepts this as the error to send back to the user
   sys.exit(1)

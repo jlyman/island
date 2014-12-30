@@ -24,7 +24,9 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+  'island.byu.edu',
+]
 
 
 # Application definition
@@ -89,40 +91,80 @@ USE_TZ = False
 
 AUTH_USER_MODEL = 'homepage.SiteUser'
 
+
+#################################################################
+###   Debugging
+
 DEBUG_PROPAGATE_EXCEPTIONS = DEBUG
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': True,
-    'formatters': {
-        'simple': {
-            'format': '%(levelname)s %(message)s'
+if DEBUG:  # development debugging
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': True,
+        'formatters': {
+            'simple': {
+                'format': '%(levelname)s %(message)s'
+            },
         },
-    },
-    'handlers': {
-        'console':{
-            'level':'DEBUG',
-            'class':'logging.StreamHandler',
-            'formatter': 'simple'
+        'handlers': {
+            'console':{
+                'level':'DEBUG',
+                'class':'logging.StreamHandler',
+                'formatter': 'simple'
+            },
         },
-        'exim4_island_transport_handler_file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': '/tmp/exim4_island_transport_handler.log',
+        'loggers': {
+            'django_mako_plus': {
+                'handlers': ['console'],
+                'level': 'DEBUG',
+                'propagate': False,
+            },
+            'exim4_island_transport_handler': {
+                'handlers': ['console'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
         },
-    },
-    'loggers': {
-        'django_mako_plus': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
+     }
+else:  # live server debugging
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': True,
+        'formatters': {
+            'simple': {
+                'format': '%(levelname)s %(message)s'
+            },
         },
-        'exim4_island_transport_handler': {
-            'handlers': ['exim4_island_transport_handler_file'],
-            'level': 'DEBUG',
-            'propagate': True,
+        'handlers': {
+            'console':{
+                'level':'DEBUG',
+                'class':'logging.StreamHandler',
+                'formatter': 'simple'
+            },
+            'exim4_island_transport_handler_file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': '/var/log/uwsgi/app/exim4_island_transport_handler.log',
+            },
         },
-    },
- }
+        'loggers': {
+            'django_mako_plus': {
+                'handlers': ['console'],
+                'level': 'DEBUG',
+                'propagate': False,
+            },
+            'exim4_island_transport_handler': {
+                'handlers': ['exim4_island_transport_handler_file'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+            'django': {
+                'handlers': ['console'],
+                'level': 'WARNING',
+                'propagate': False,
+            },
+        },
+     }
+
 
 
 # Static files (CSS, JavaScript, Images)
@@ -145,7 +187,7 @@ AUTHENTICATION_BACKENDS = (
 ###   Email settings
 ###   For debugging, run "python3 -m smtpd -n -c DebuggingServer localhost:1025"
 
-EMAIL_HOST = 'warp.byu.edu'
+EMAIL_HOST = 'island.byu.edu'
 EMAIL_PORT = 25
 
 #EMAIL_HOST = 'localhost'

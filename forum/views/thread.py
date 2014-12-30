@@ -123,30 +123,39 @@ def attachment(request):
   
 def send_comment_email_immediate(request, comment):
   '''Sends email out for a given comment'''
+  # create the unique message id
+  headers = {}
+  headers['Message-ID'] = '<comment%i@island.byu.edu>' % comment.id
+  subject = comment.thread.title
+  
+  # reference it to the first comment in the thread.  Some email clients use References, some use In-Reply-To
+  first_comment = fmod.Comment.objects.filter(thread=comment.thread).order_by('created')[0]
+  if first_comment != comment:
+    subject = 'Re: %s' % subject
+    headers['References'] = '<comment%i@island.byu.edu>' % first_comment.id
+    headers['In-Reply-To'] = headers['References']
+
   # we pull anyone without a TN object or those with explicit "immediate" for this topoic
   params_list = []
   for user in hmod.SiteUser.objects.filter(Q(topicnotification__isnull=True) | Q(topicnotification__topic=comment.thread.topic, topicnotification__notification='immediate')):
     params_list.append({
       'to_name': user.fullname,
       'to_email': user.email,
-      'subject': comment.thread.title,
+      'subject': subject,
       'comment': comment.comment,
       'topic_title': comment.thread.topic.title,
       'topic_key': comment.thread.topic.key,
     })
     
-  # create the unique message id
-  headers = {}
-  headers['Message-ID'] = '<comment%i@island.byu.edu>' % comment.id
-  
-  # reference it to the first comment in the thread
-  first_comment = fmod.Comment.objects.filter(thread=comment.thread).order_by('created')[0]
-  if first_comment != comment:
-    headers['References'] = '<comment%i@island.byu.edu>' % first_comment.id
-  
+  # create the fake meta for celery
+  if isinstance(request, dict):  # this occurs when called from the exim4 handler script
+    meta = request
+  else:
+    meta = prepare_fake_meta(request)
+    
   # call the html mailer with the params list and our email template
   # this needs to be switched to a celery call so it runs offline
-  send_html_mail(prepare_fake_meta(request), 'forum', 'comment.email.immediate.htm', [ cf.id for cf in comment.files.all() ], params_list, headers)
+  send_html_mail(meta, 'forum', 'comment.email.immediate.htm', [ cf.id for cf in comment.files.all() ], params_list, headers)
     
   
     

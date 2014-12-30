@@ -7,7 +7,7 @@ pip3 install python3-ldap        # talks with byu ldap server
 pip3 install django-jsonfield    # allows json in models
 pip3 install shortuuid           # creates short guids
 pip3 install rjsmin              # for filters.py
-
+pip3 install celery              # our offline email runner
 
 # CAREFUL!!!
 # To drop every table in the database so you can set up fresh:
