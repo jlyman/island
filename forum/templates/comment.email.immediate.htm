@@ -24,16 +24,22 @@
 
 <%block name="email_html_block">
   <style type="text/css">
+      p.island_by {
+        margin: 0 0 24px 0;
+        color: #888; 
+        font-family: sans-serif;
+        font-size: 12px;
+      }
       p.island_divider {
         margin: 24px 0 0 0;
         color: #888; 
         font-family: sans-serif;
-        font-size: 14px;
+        font-size: 12px;
       }
       p.island_footer {
         color: #888; 
         font-family: sans-serif;
-        font-size: 14px;
+        font-size: 12px;
         margin: 3px 0 3px 0;
       }
       p.island_footer > a {
@@ -41,10 +47,12 @@
         color: #0088CC;
       }
   </style>
+  <p class="island_by">Comment by <a href="mailto:${ comment_email }">${ comment_name }</a>:</p>
+
 
   ${ comment }
   
-
+  
   <p class="island_divider">-- </p>
   <p class="island_footer">This email was sent from <a href="https://island.byu.edu/forum/thread/${ thread_id }/">https://island.byu.edu/forum/thread/${ thread_id }/</a>.</p>
   <p class="island_footer">Click here to unsubscribe from the <a href="https://island.byu.edu/homepage/account.unsubscribe/${ thread_id }/${ to_id }/${ unsubscribe_hash }/${ topic_key }/">${ topic_title } topic</a> or from <a href="https://island.byu.edu/homepage/account.unsubscribe/${ thread_id }/${ to_id }/${ unsubscribe_hash }/">all Island emails</a>.</p>  

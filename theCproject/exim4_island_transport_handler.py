@@ -119,10 +119,16 @@ try:
   # formatting if text/html 
   if contenttype == 'text/html':
     root = etree.HTML(first_comment)
-    # remove any <* type="cite"> tags - these are referenced messages
+    # remove any <* type="cite"> tags - these are referenced messages (supposedly the standard way to include referenced messages)
     for node in root.xpath("//*[@type='cite']"):
       node.getparent().remove(node)
-    # remove any inline graphics - we don't support this right now, but we could at some point
+    # the gmail way to include referenced messages
+    for node in root.xpath("//*[@class='gmail_extra']"):
+      node.getparent().remove(node)
+    # another gmail way to include referenced messages
+    for node in root.xpath("//*[@class='gmail_quote']"):
+      node.getparent().remove(node)
+    # remove any inline graphics - we don't support this right now, but we could at some point - we just show icons for any attachments at the end of the post
     for node in root.xpath('//img'):
       node.getparent().remove(node)
     # remove any email signature by searching for "-- " in any text node
@@ -169,6 +175,7 @@ try:
   }
     
   # send the emails
+  log.warning('Sending email for comment: %s > %s' % (comment.id, comment.comment))
   send_comment_email_immediate(meta, comment)
   
   # signal to exim that we have success

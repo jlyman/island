@@ -155,6 +155,8 @@ def send_comment_email_immediate(request, comment):
       'to_id': user.id,
       'subject': subject,
       'comment': comment.comment,
+      'comment_name': comment.user.fullname,
+      'comment_email': comment.user.email,
       'topic_title': thread.topic.title,
       'topic_key': thread.topic.key,
       'thread_id': thread.id,
