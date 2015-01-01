@@ -43,3 +43,51 @@ class NotificationForm(forms.Form):
       if tn != None:
         self.initial['field%s' % topic.id] = tn.notification
   
+
+
+#####################################################################
+###   Unsubscription via links in emails
+
+@view_function
+def unsubscribe(request):
+  params = {}
+  try:
+      # get the thread
+      try:
+        thread = fmod.Thread.objects.get(id=request.urlparams[0])
+      except (fmod.Thread.DoesNotExist, ValueError):
+        raise AssertionError('The thread object (#%s) could not be found' % request.urlparams[0])
+
+      # get the user object
+      try:
+        user = hmod.SiteUser.objects.get(id=request.urlparams[1])
+      except (hmod.SiteUser.DoesNotExist, ValueError):
+        raise AssertionError('The user object (#%s) could not be found' % request.urlparams[1])
+  
+      # check the hash - that's how we do security on these links since the user might not be logged in
+      # this prevents hackers from spamming this endpoint and unsubscribing users - the thread.get_hash() can't be guessed because it contains the salt
+      m = thread.get_hash()
+      m.update((user.email or 'defaultemail').encode('utf8'))  # add some user info to it
+      assert request.urlparams[2] == m.hexdigest(), 'The hash did not verify against the given user account'
+  
+      # get the topic the user wants to be unsubscribed from
+      if not request.urlparams[3].strip():  # unsubscribe from all
+        for topic in fmod.Topic.objects.order_by('sort_order'):
+          tn, created = fmod.TopicNotification.objects.get_or_create(user=request.user, topic=topic)
+          tn.notification = 'none'
+          tn.save()
+      
+      else: # unsubscribe from a single topic
+        try:
+          topic = fmod.Topic.objects.get(key=request.urlparams[3])
+          tn, created = fmod.TopicNotification.objects.get_or_create(user=request.user, topic=topic)
+          tn.notification = 'none'
+          tn.save()
+        except (fmod.Topic.DoesNotExist, ValueError):
+          raise AssertionError('The topic object (%s) could not be found' % request.urlparams[3])
+          
+  except AssertionError as e:      
+    params['error_msg'] = str(e)
+    
+  # return the response
+  return templater.render_to_response(request, 'account.unsubscribe.html', params)

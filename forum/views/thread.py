@@ -127,28 +127,38 @@ RE_MESSAGE_ID = re.compile('c(\d+)_([^@]+)@island.byu.edu')
 
 def send_comment_email_immediate(request, comment):
   '''Sends email out for a given comment'''
+  thread = comment.thread
+  
   # create the unique message id
   headers = {}
-  headers['Message-ID'] = '<c%i_%s@island.byu.edu>' % (comment.id, comment.thread.get_hash())  # if we change this, we need to change the regex above
-  subject = comment.thread.title
+  headers['Message-ID'] = '<c%i_%s@island.byu.edu>' % (comment.id, thread.get_hash().hexdigest())  # if we change this, we need to change the regex above
+  subject = thread.title
   
   # reference it to the first comment in the thread.  Some email clients use References, some use In-Reply-To
-  first_comment = fmod.Comment.objects.filter(thread=comment.thread).order_by('created')[0]
+  first_comment = fmod.Comment.objects.filter(thread=thread).order_by('created')[0]
   if first_comment != comment:
     subject = 'Re: %s' % subject
-    headers['References'] = '<c%i_%s@island.byu.edu>' % (first_comment.id, comment.thread.get_hash())
+    headers['References'] = '<c%i_%s@island.byu.edu>' % (first_comment.id, thread.get_hash().hexdigest())
     headers['In-Reply-To'] = headers['References']
-
+    
   # we pull anyone without a TN object or those with explicit "immediate" for this topoic
   params_list = []
-  for user in hmod.SiteUser.objects.filter(Q(topicnotification__isnull=True) | Q(topicnotification__topic=comment.thread.topic, topicnotification__notification='immediate')):
+  for user in hmod.SiteUser.objects.filter(Q(topicnotification__isnull=True) | Q(topicnotification__topic=thread.topic, topicnotification__notification='immediate')):
+    # create a unique unsubscribe hash for this thread and user - this prevents hackers from unsubscribing people without the link
+    m = thread.get_hash()
+    m.update((user.email or 'defaultemail').encode('utf8'))  # add some user info to it
+    
+    # add parameters for this email
     params_list.append({
       'to_name': user.fullname,
       'to_email': user.email,
+      'to_id': user.id,
       'subject': subject,
       'comment': comment.comment,
-      'topic_title': comment.thread.topic.title,
-      'topic_key': comment.thread.topic.key,
+      'topic_title': thread.topic.title,
+      'topic_key': thread.topic.key,
+      'thread_id': thread.id,
+      'unsubscribe_hash': m.hexdigest(),
     })
     
   # create the fake meta for celery

@@ -1,0 +1,32 @@
+## This template is standalone - no inheritance -- because unsubscriptions often come from phones and other places that
+## can't do modern html.
+
+<html>
+  <head>
+    <title>Unsubscribe from Island</title>
+  </html>
+  <body>
+    <h1>Welcome to Island</h1>
+    <p>&nbsp;</p>
+    
+    <center>
+      <p>
+        %if error_msg:
+          <font color="#880000">An error occurred: ${ error_msg }.</font>
+        %else:
+          <font color="#008800">You have been successfully unsubscribed!</font>
+        %endif
+      </p>
+    </center>
+  
+    <p>&nbsp;</p>
+
+    <p>
+      <a href="/account/">Manage My Subscriptions on Island</a>
+    </p>  
+    
+    <p><font color="#888888" size="2">This is a scaled-down web page to make unsubscriptions work everywhere, even on NCSA Mosaic and Internet Explorer.</font></p>
+
+  </body>
+</html>
+

@@ -88,7 +88,7 @@ def send_html_mail(meta, app, template, upload_file_ids, params_list, email_head
       
     # send the mail
     try:
-      print('sending mail to', to_address)
+#      print('sending mail to', to_address)
       msg.send()
     except Exception as e:
       print('Error sending email to %s: %s' % (to_address, e))

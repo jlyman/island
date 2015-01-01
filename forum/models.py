@@ -76,11 +76,14 @@ class Thread(models.Model):
     self.options[name] = value
     
   def get_hash(self):
-    '''Returns the hash for this thread. The hash is a stable value across time, and it includes a salt to make it nearly impossible to guess.'''
+    '''Returns the hash for this thread. The hash is a stable value across time, and it includes a salt to make it nearly impossible to guess.
+       The return is an md5 hash object, so call thread.get_hash().hexdigest() to get a string.
+    '''
     m = hashlib.md5()
     m.update(self.created.isoformat().encode('utf8'))
     m.update(self.get_option('salt', 'somedefault').encode('utf8'))
-    return m.hexdigest()
+    # returning the md5 object allows the caller to update() more stuff to it
+    return m
     
     
 MAX_COMMENT_FILE_SIZE = 10 * 1024 * 1024  # 10 mb   

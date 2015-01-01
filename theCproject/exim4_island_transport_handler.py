@@ -72,7 +72,7 @@ try:
     except fmod.Comment.DoesNotExist:
       raise Exception('Error: The Island thread this email references could not be located.  It may have been deleted.')
     # check the hash
-    assert match.group(2) == thread_comment.thread.get_hash(), 'Invalid hash on the email Message-ID header.'
+    assert match.group(2) == thread_comment.thread.get_hash().hexdigest(), 'Invalid hash on the email Message-ID header.'
     
   # get the first comment from the email body
   first_comment = ''

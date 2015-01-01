@@ -96,7 +96,7 @@ AUTH_USER_MODEL = 'homepage.SiteUser'
 ###   Debugging
 
 DEBUG_PROPAGATE_EXCEPTIONS = DEBUG
-if DEBUG:  # development debugging
+if DEBUG:  # development logging
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': True,
@@ -125,7 +125,7 @@ if DEBUG:  # development debugging
             },
         },
      }
-else:  # live server debugging
+else:  # live server logging
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': True,
@@ -148,9 +148,9 @@ else:  # live server debugging
         },
         'loggers': {
             'django_mako_plus': {
-                'handlers': ['console'],
-                'level': 'DEBUG',
-                'propagate': False,
+               'handlers': ['console'],
+               'level': 'WARNING',
+               'propagate': False,
             },
             'exim4_island_transport_handler': {
                 'handlers': ['exim4_island_transport_handler_file'],
