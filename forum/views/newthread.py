@@ -10,7 +10,7 @@ from lib.ckeditor import ckEditorWidget
 from forum import models as fmod
 from forum.views.thread import send_comment_email_immediate
 from . import templater, prepare_params
-
+import hashlib, random
 
 
 @view_function
@@ -21,9 +21,18 @@ def process_request(request):
   # handle the form
   form = ThreadForm(request)
   if request.method == 'POST':
-    form = ThreadForm(request, request.POST)
+    form = ThreadForm(request, request.POST, request.FILES)
     if form.is_valid():
+      files = []
       thread, comment = create_thread(request.user, form.cleaned_data['topic'], form.cleaned_data['title'], form.cleaned_data['comment'])
+      if form.cleaned_data['file1']:
+        cf = hmod.UploadedFile()
+        cf.filename = form.cleaned_data['file1'].name
+        cf.contenttype = form.cleaned_data['file1'].content_type
+        cf.size = form.cleaned_data['file1'].size
+        cf.filebytes = form.cleaned_data['file1'].read()
+        cf.save()
+        comment.files.add(cf)
       send_comment_email_immediate(request, comment)
       return HttpResponseRedirect('/forum/thread/%s/' % thread.pk)
 
@@ -39,6 +48,7 @@ class ThreadForm(forms.Form):
   topic = forms.ChoiceField() # recreated with choices in constructor
   title = forms.CharField(label="Title:", max_length=250, required=True, widget=forms.TextInput(attrs={ 'class': 'form-control' }))
   comment = forms.CharField()
+  file1 = forms.FileField(label="Attach a File:", required=False)
   
 
   def __init__(self, request, *args, **kwargs):
@@ -60,12 +70,19 @@ class ThreadForm(forms.Form):
       raise forms.ValidationException('Please select a valid topic.')
       
       
+      
+ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'      
+      
+      
 def create_thread(user, topic, thread_title, first_comment):
   '''Creates a new thread.  This method is called by the view above as well as the settings/exim4_island_transport_handler.py file.'''
+  # create the thread
   thread = fmod.Thread(user=user)
   thread.topic = topic
   thread.title = thread_title
+  thread.set_option('salt', ''.join([ random.choice(ALPHABET) for i in range(8) ]))  # used for message ids to provide security on reply emails
   thread.save()
+  # add the first comment
   comment = fmod.Comment(user=user, thread=thread)
   comment.comment = first_comment
   comment.save()  

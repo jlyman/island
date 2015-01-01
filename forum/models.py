@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from lib.filters import *
 from jsonfield import JSONField
 from homepage import models as hmod
-
+import hashlib
 
 ######################################################################
 ###   Threads and comments - this is kept simple on purpose.
@@ -75,6 +75,13 @@ class Thread(models.Model):
       self.options = {}
     self.options[name] = value
     
+  def get_hash(self):
+    '''Returns the hash for this thread. The hash is a stable value across time, and it includes a salt to make it nearly impossible to guess.'''
+    m = hashlib.md5()
+    m.update(self.created.isoformat().encode('utf8'))
+    m.update(self.get_option('salt', 'somedefault').encode('utf8'))
+    return m.hexdigest()
+    
     
 MAX_COMMENT_FILE_SIZE = 10 * 1024 * 1024  # 10 mb   
 MAX_NUM_COMMENT_FILES = 4  # 4 files per comment
@@ -105,7 +112,6 @@ class Comment(models.Model):
     if not isinstance(self.options, dict):  # force a dictionary
       self.options = {}
     self.options[name] = value
-    
     
     
     

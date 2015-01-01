@@ -25,7 +25,7 @@
   
     <div id="form_container">
       ${ form.non_field_errors() }
-      <form method="POST">
+      <form method="POST" enctype="multipart/form-data">
         <table>
           ${ form.as_table() }
         </table>

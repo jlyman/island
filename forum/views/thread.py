@@ -11,7 +11,7 @@ from lib.mailer import send_html_mail
 from lib.ckeditor import ckEditorWidget
 from forum import models as fmod
 from . import templater, prepare_params
-
+import re
 
 
 @view_function
@@ -25,7 +25,7 @@ def process_request(request):
     thread = fmod.Thread.objects.get(pk=request.urlparams[0])
   except (fmod.Thread.DoesNotExist, ValueError, TypeError):
     raise RedirectException('/forum/')
-
+    
   # handle the form
   comment_form = CommentForm(request)
   if request.method == 'POST':
@@ -121,18 +121,22 @@ def attachment(request):
 #############################################
 ###   Sends notifications for new comments
   
+# parses the message id created in the method below
+RE_MESSAGE_ID = re.compile('c(\d+)_([^@]+)@island.byu.edu')
+
+
 def send_comment_email_immediate(request, comment):
   '''Sends email out for a given comment'''
   # create the unique message id
   headers = {}
-  headers['Message-ID'] = '<comment%i@island.byu.edu>' % comment.id
+  headers['Message-ID'] = '<c%i_%s@island.byu.edu>' % (comment.id, comment.thread.get_hash())  # if we change this, we need to change the regex above
   subject = comment.thread.title
   
   # reference it to the first comment in the thread.  Some email clients use References, some use In-Reply-To
   first_comment = fmod.Comment.objects.filter(thread=comment.thread).order_by('created')[0]
   if first_comment != comment:
     subject = 'Re: %s' % subject
-    headers['References'] = '<comment%i@island.byu.edu>' % first_comment.id
+    headers['References'] = '<c%i_%s@island.byu.edu>' % (first_comment.id, comment.thread.get_hash())
     headers['In-Reply-To'] = headers['References']
 
   # we pull anyone without a TN object or those with explicit "immediate" for this topoic

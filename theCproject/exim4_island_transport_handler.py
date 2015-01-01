@@ -18,7 +18,7 @@ init_django.initialize()
 from homepage import models as hmod
 from forum import models as fmod
 from forum.views.newthread import create_thread
-from forum.views.thread import send_comment_email_immediate
+from forum.views.thread import send_comment_email_immediate, RE_MESSAGE_ID
 from lxml import etree
 
 # see settings.py for this logger setup
@@ -65,12 +65,14 @@ try:
   
   # determine if this is a new thread or an existing thread
   thread_comment = None
-  match = re.search('<comment(\d+)\@island.byu.edu>', msg['References'] or msg['In-Reply-To'] or '')
+  match = RE_MESSAGE_ID.search(msg['References'] or msg['In-Reply-To'] or '')
   if match:
     try:
       thread_comment = fmod.Comment.objects.get(id=match.group(1))
     except fmod.Comment.DoesNotExist:
       raise Exception('Error: The Island thread this email references could not be located.  It may have been deleted.')
+    # check the hash
+    assert match.group(2) == thread_comment.thread.get_hash(), 'Invalid hash on the email Message-ID header.'
     
   # get the first comment from the email body
   first_comment = ''

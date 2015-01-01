@@ -18,7 +18,7 @@ if not settings.DEBUG:
 from lib.filters import *
 from homepage import models as hmod
 from forum import models as fmod
-import random, datetime
+import random, datetime, sys
 
 # add a few test users
 # for info in [
@@ -90,6 +90,8 @@ for i, (key, title, icon, starter) in enumerate([
   topic.icon = icon
   topic.starter = starter
   topic.save()
+
+sys.exit(0)
 
 # add new threads and comments
 print('Adding new threads and comments.')
