@@ -12,7 +12,7 @@
     <a href="/forum/thread/${ thread.id }/">${ thread.title | h }</a>
   </div>
   <div>
-    Thread by <a href="">${ thread.user.fullname }</a>
+    Thread by <a href="">${ thread.user.get_full_name() }</a>
   </div>
 </%def>
 

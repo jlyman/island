@@ -13,7 +13,7 @@
         <td>${ thread.created.strftime('%b %d at %H:%M') }</td>
       <tr></tr>
         <td>By:</td>
-        <td>${ thread.user.fullname }</td>
+        <td>${ thread.user.get_full_name() | h }</td>
       </tr>
     </table>
   </div>
@@ -21,7 +21,7 @@
   <ul class="breadcrumbs">
     <li><a href="/">Island</a></li>
     <li><a href="/forum/">Forum</a></li>
-    <li><a href="/forum/index/${ thread.topic.key }/">${ thread.topic.title }</a></li>
+    <li><a href="/forum/index/${ thread.topic.key }/">${ thread.topic.title | h }</a></li>
   </ul>
   
   <div class="vertical_spacer"></div>
@@ -41,7 +41,7 @@
     
       <div class="comment_container_left">
         <div class="comment_container_left_top">
-          <div class="comment_user"><a href="">${ comment.user.fullname | h }</a></div>
+          <div class="comment_user"><a href="">${ comment.user.get_full_name() | h }</a></div>
         </div><!-- comment_container_left_top -->
         
         <div class="comment_container_left_bottom">
@@ -61,7 +61,7 @@
         <div class="comment_container_right_bottom">
           <div class="voting_container"> 
             <div><a class="vote_up_link" data-comment-id="${ comment.id }"><div class="icon icon_arrow_up2"></div></a></div>
-            <div class="current_vote">${comment.vote}</div>
+            <div class="current_vote">${ comment.vote }</div>
             <div><a class="vote_down_link" data-comment-id="${ comment.id }"><div class="icon icon_arrow_down2"></div></a></div>
           </div>
         </div><!-- comment_container_right_bottom -->

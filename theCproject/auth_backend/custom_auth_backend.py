@@ -18,7 +18,7 @@ class CustomBackend:
     
     # next, get the user attributes from ldap
     try:
-      search_tree = c.search('uid=' + ry_username +', ou=people, o=byu.edu','(objectClass=*)', SEARCH_SCOPE_WHOLE_SUBTREE, attributes=['cn', 'permanentPhone', 'mail', 'employeeType'])
+      search_tree = c.search('uid=' + ry_username +', ou=people, o=byu.edu','(objectClass=*)', SEARCH_SCOPE_WHOLE_SUBTREE, attributes=['cn', 'permanentPhone', 'mail', 'employeeType', 'preferredfirstname', 'givenname', 'sn' ])
       attributes = c.response[0].get('attributes')
     except LDAPException:
       return None
@@ -33,10 +33,13 @@ class CustomBackend:
       user.username = ry_username
 
     user.fullname = attributes.get('cn')[0] if attributes.get('cn') else ''
+    user.prefname = attributes.get('preferredfirstname')[0] if attributes.get('preferredfirstname') else ''
+    user.surname = attributes.get('sn')[0] if attributes.get('sn') else ''
     user.email = attributes.get('mail')[0] if attributes.get('mail') else ''
     user.phone = attributes.get('permanentPhone')[0] if attributes.get('permanentPhone') else ''
     user.byu_status = ','.join(attributes.get('employeeType')) if attributes.get('employeeType') else ''
     user.save()  
+    print(user.get_full_name())
 
     # return the user
     return user

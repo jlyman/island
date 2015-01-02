@@ -29,6 +29,8 @@ class SiteUser(AbstractUser):
   level = models.ForeignKey(Level, blank=True, null=True)
   user_type = models.ForeignKey(UserType, blank=True, null=True)
   fullname = models.TextField(blank=True, null=True)
+  prefname = models.TextField(blank=True, null=True)
+  surname = models.TextField(blank=True, null=True)
   phone = models.TextField(blank=True, null=True)
   byu_status = models.TextField(blank=True, null=True)
   total_points = models.IntegerField(max_length=200, blank=True, null=True, default=0)
@@ -37,6 +39,10 @@ class SiteUser(AbstractUser):
     return '%s: %s' % (self.id, self.fullname)
 
 
+  def get_full_name(self):
+    if self.prefname and self.surname:
+      return '%s %s' % (self.prefname, self.surname)
+    return self.fullname
 
     
 ######################################################################

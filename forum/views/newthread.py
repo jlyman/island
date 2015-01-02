@@ -62,13 +62,17 @@ class ThreadForm(forms.Form):
     self.fields['topic'] = forms.ChoiceField(label="Topic:", required=True, choices=choices, widget=lib.widgets.ButtonChoiceWidget())
     if not self.initial.get('topic'):
       self.initial['topic'] = choices[0][0]
+      
+  def clean_file1(self):
+    if self.cleaned_data['file1'].size > fmod.MAX_COMMENT_FILE_SIZE:
+      raise forms.ValidationError('The attached file is above the limit of %.1f KB.' % (fmod.MAX_COMMENT_FILE_SIZE / 1024))
+    return self.cleaned_data['file1']
     
   def clean_topic(self):
     try:
       return fmod.Topic.objects.get(pk=self.cleaned_data['topic'])
     except fmod.Topic.DoesNotExist:
-      raise forms.ValidationException('Please select a valid topic.')
-      
+      raise forms.ValidationError('Please select a valid topic.')
       
       
 ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'      

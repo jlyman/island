@@ -66,6 +66,10 @@ class CommentForm(forms.Form):
     super().__init__(*args, **kwargs)
     self.fields['comment'] = forms.CharField(label="", max_length=4000, required=True, widget=ckEditorWidget(request, toolbar='be_small', attrs={ 'style': 'height: 250px;' }))
 
+  def clean_file1(self):
+    if self.cleaned_data['file1'].size > fmod.MAX_COMMENT_FILE_SIZE:
+      raise forms.ValidationError('The attached file is above the limit of %.1f KB.' % (fmod.MAX_COMMENT_FILE_SIZE / 1024))
+    return self.cleaned_data['file1']
   
 
   
@@ -150,12 +154,12 @@ def send_comment_email_immediate(request, comment):
     
     # add parameters for this email
     params_list.append({
-      'to_name': user.fullname,
+      'to_name': user.get_full_name(),
       'to_email': user.email,
       'to_id': user.id,
       'subject': subject,
       'comment': comment.comment,
-      'comment_name': comment.user.fullname,
+      'comment_name': comment.user.get_full_name(),
       'comment_email': comment.user.email,
       'topic_title': thread.topic.title,
       'topic_key': thread.topic.key,

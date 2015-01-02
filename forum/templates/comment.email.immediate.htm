@@ -14,7 +14,7 @@
 
 
 <%block name="email_subject_block">
-	${ subject }
+	${ subject | xss_escape}
 </%block>
 
 
@@ -47,10 +47,10 @@
         color: #0088CC;
       }
   </style>
-  <p class="island_by">Comment by <a href="mailto:${ comment_email }">${ comment_name }</a>:</p>
+  <p class="island_by">Comment by <a href="mailto:${ comment_email | u }">${ comment_name | h }</a>:</p>
 
 
-  ${ comment }
+  ${ comment | xss_escape }
   
   
   <p class="island_divider">-- </p>
