@@ -67,8 +67,9 @@ class CommentForm(forms.Form):
     self.fields['comment'] = forms.CharField(label="", max_length=4000, required=True, widget=ckEditorWidget(request, toolbar='be_small', attrs={ 'style': 'height: 250px;' }))
 
   def clean_file1(self):
-    if self.cleaned_data['file1'].size > fmod.MAX_COMMENT_FILE_SIZE:
-      raise forms.ValidationError('The attached file is above the limit of %.1f KB.' % (fmod.MAX_COMMENT_FILE_SIZE / 1024))
+    if self.cleaned_data['file1']:
+      if self.cleaned_data['file1'].size > fmod.MAX_COMMENT_FILE_SIZE:
+        raise forms.ValidationError('The attached file is above the limit of %.1f KB.' % (fmod.MAX_COMMENT_FILE_SIZE / 1024))
     return self.cleaned_data['file1']
   
 

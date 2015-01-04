@@ -64,8 +64,9 @@ class ThreadForm(forms.Form):
       self.initial['topic'] = choices[0][0]
       
   def clean_file1(self):
-    if self.cleaned_data['file1'].size > fmod.MAX_COMMENT_FILE_SIZE:
-      raise forms.ValidationError('The attached file is above the limit of %.1f KB.' % (fmod.MAX_COMMENT_FILE_SIZE / 1024))
+    if self.cleaned_data['file1']:
+      if self.cleaned_data['file1'].size > fmod.MAX_COMMENT_FILE_SIZE:
+        raise forms.ValidationError('The attached file is above the limit of %.1f KB.' % (fmod.MAX_COMMENT_FILE_SIZE / 1024))
     return self.cleaned_data['file1']
     
   def clean_topic(self):
