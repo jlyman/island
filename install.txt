@@ -9,6 +9,17 @@ pip3 install shortuuid           # creates short guids
 pip3 install rjsmin              # for filters.py
 pip3 install celery              # our offline email runner
 
+
+###########################################################
+###   CAS Authentication
+### We included the django_cas_ng module directly in our code
+### because I had to change some of it to work right with
+### Py3 and BYU's CAS server.  I didn't document all the changes,
+### but they are all in views.py and backend.py.  Run
+### diff on these files if you need to upgrade it.
+###
+
+
 # CAREFUL!!!
 # To drop every table in the database so you can set up fresh:
 # select 'drop table "' || tablename || '" cascade;' from pg_tables where schemaname='public';

@@ -51,7 +51,7 @@ def pre_finish(request):
   ticketID = request.urlparams[0]
   ticket = hmod.TaskTicket.objects.get(id=ticketID)
   if not request.user.is_authenticated():
-    return HttpResponseRedirect('/homepage/cover/')
+    return HttpResponseRedirect('/homepage/login/')
   form = RatingForm(request.POST or None)
   if request.method == 'POST':
     form = RatingForm(request.POST)

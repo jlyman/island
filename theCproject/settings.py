@@ -22,7 +22,7 @@ SECRET_KEY = '@glp695%f&1&f-17g9k84$!6rbf8d52-(we_skjo06od!_up8^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = [
   'island.byu.edu',
@@ -49,7 +49,7 @@ INSTALLED_APPS = DJANGO_APPS + CUSTOM_APPS
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',  # disabled beacuse our site requires login for anything useful anyway
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -178,14 +178,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 AUTHENTICATION_BACKENDS = ( 
-    'theCproject.auth_backend.custom_auth_backend.CustomBackend', 
+    'django_cas_ng.backends.CASBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
 
 ###################################
 ###   Email settings
-###   For debugging, run "python3 -m smtpd -n -c DebuggingServer localhost:1025"
 
 EMAIL_HOST = 'island.byu.edu'
 EMAIL_PORT = 25
@@ -194,8 +193,21 @@ EMAIL_PORT = 25
 #EMAIL_PORT = 1025
 
 
-###############################################################
+#####################################
+###   CAS Authentication at BYU
+
+CAS_SERVER_URL = 'https://cas.byu.edu/cas/login'
+CAS_REDIRECT_URL = 'https://island.byu.edu/account/'
+CAS_VERSION = '3'
+# NOTE THAT when testing, BYU doesn't send the extended attributes.  
+#CAS_SERVER_URL = 'https://cas.byu.edu/cas/login'
+#CAS_REDIRECT_URL = 'http://localhost:8000/account/'
+
+
+
+#############################################################################################
 ###   Specific settings for the Django-Mako-Plus app
+
 # the default app/templates/ directory is always included in the template search path
 # define any additional search directories here - this allows inheritance between apps
 # absolute paths are suggested

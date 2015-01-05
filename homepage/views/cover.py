@@ -18,6 +18,9 @@ def process_request(request):
      when users log in to the system. Specifically, it will 
      create a form and authenticate against the database
   '''
+  # conan disabled this now that we're doing CAS authentication.  No more LDAP so no more need for this form.
+  return Http404
+  
   # check user permissions and prepare the params
   params = prepare_params(request, require_authenticated=False)
 
@@ -71,5 +74,5 @@ def logout(request):
   
   if request.urlparams[0] == 'mybyu':
     return HttpResponseRedirect('https://gamma.byu.edu/ry/ae/prod/person/cgi/personSummary.cgi')
-  return HttpResponseRedirect('/homepage/cover/')
+  return HttpResponseRedirect('/homepage/login/')
 
