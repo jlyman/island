@@ -55,7 +55,7 @@ When you are finished working, commit changes back to GitHub: `git commit` and `
 
 # Notes
 
-Some random notes about the system.
+Some random notes about the system:
 
 ## CAS Authentication
 
