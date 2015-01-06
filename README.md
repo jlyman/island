@@ -51,7 +51,7 @@ Create an empty directory, then download the code from https://github.com/doconi
 
 Before working, always pull the most recent changes from GitHub: `git pull origin master`.
 
-When you are finished working, commit changes back to GitHub: `git commit` and `git push origin master`.  Note that you can only commit changes if you have been granted rights by Dr. Albrecht.
+When you are finished working, commit changes back to GitHub: `git commit` and `git push origin master`. 
 
 # Notes
 
