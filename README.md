@@ -24,14 +24,14 @@ Install Python 3 (http://www.python.org) on your machine.  Ensure you can run "p
 
 Finally, install several additional libraries.  Some of these are complex and may be more easily installed by downloading an installation package (such as MSI on Windows).  The difficult ones are noted:
 
-pip3 install django              # framework
-pip3 install mako                # templating language
-pip3 install django-mako-plus    # connects django to mako
-pip3 install lxml                # xml parser (this might be easier to install via a binary installation package)
-pip3 install psycopg2            # database driver (this might be easier to install via a binary installation package)
-pip3 install django-jsonfield    # allows json in models
-pip3 install shortuuid           # creates short guids
-pip3 install rjsmin              # for filters.py
+* pip3 install django              # framework
+* pip3 install mako                # templating language
+* pip3 install django-mako-plus    # connects django to mako
+* pip3 install lxml                # xml parser (this might be easier to install via a binary installation package)
+* pip3 install psycopg2            # database driver (this might be easier to install via a binary installation package)
+* pip3 install django-jsonfield    # allows json in models
+* pip3 install shortuuid           # creates short guids
+* pip3 install rjsmin              # for filters.py
 
 ## PostgreSQL
 
