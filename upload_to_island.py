@@ -5,6 +5,14 @@ import getpass
 import datetime
 
 
+#############################################################
+###   IMPORTANT: You can ONLY run this script if you
+###   have been granted SSH rights on island.byu.edu.
+###   There are no passwords used below, so you must have
+###   an SSH key on island to make this work.
+###
+
+
 RSYNC_OPTIONS = [
   '-e "ssh"',
 #  '--verbose',

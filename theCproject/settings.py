@@ -64,13 +64,17 @@ WSGI_APPLICATION = 'wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
+if DEBUG:
+  DB_PASS = 'thecproject2014'
+else:
+  DB_PASS = open('/var/island/pass.txt', 'r').read().strip()
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'thecproject',
         'USER': 'thecproject',
-        'PASSWORD': 'thecproject2014',
+        'PASSWORD': DB_PASS,
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
