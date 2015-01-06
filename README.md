@@ -18,6 +18,12 @@ The code is built on top of Django, Python 3, Django-Mako-Plus, and Postgresql. 
 
 The following is a quick installation guide.  As one of you install, please make this more complete so others can install more easily.
 
+## PostgreSQL
+
+Install PostgreSQL, the database we use for Island.  It is at http://www.postgresql.org/. 
+
+Create a database named `thecproject`, username `thecproject`, password `thecproject2014`.  This will be your development database. See the settings.py file for the full DB settings.
+
 ## Python 3
 
 Install Python 3 (http://www.python.org) on your machine.  Ensure you can run "python3" from the command line.  Then install PIP (https://pip.pypa.io/en/latest/installing.html).
@@ -33,11 +39,6 @@ Finally, install several additional libraries.  Some of these are complex and ma
 * pip3 install shortuuid           # creates short guids
 * pip3 install rjsmin              # for filters.py
 
-## PostgreSQL
-
-Install PostgreSQL, the database we use for Island.  It is at http://www.postgresql.org/. 
-
-Create a database named `thecproject`, username `thecproject`, password `thecproject2014`.  This will be your development database. See the settings.py file for the full DB settings.
 
 
 ## Download the Code
