@@ -18,6 +18,11 @@ from forum import models as fmod
 pwd = input('cca password: ')
 pwd = pwd.strip()
 
+
+iscore = fmod.Topic.objects.get(key='iscore')
+
+
+
 # ldap
 from ldap3 import Server, Connection, LDAPException, AUTH_SIMPLE, STRATEGY_SYNC, GET_ALL_INFO, SEARCH_SCOPE_WHOLE_SUBTREE
 s = Server('ldap.byu.edu', port = 636, get_info = GET_ALL_INFO, use_ssl = True)
@@ -53,5 +58,9 @@ for line in open('/Users/conan/Desktop/ryids.txt'):
 
   print('\t', user.first_name, user.last_name, user.email)
     
-      
+
+  tn, created = fmod.TopicNotification.objects.get_or_create(user=user, topic=iscore)
+  if not tn.notification:
+    tn.notification = 'none'
+    tn.save()      
 
