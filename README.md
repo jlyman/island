@@ -57,6 +57,15 @@ Next, create the database with `python3 manage.py migrate`.  If you set up your 
 Finally, create some debugging data.  We created a simple script for this. Make any needed modifications (for your username) to `theCproject/create_debugging_data.py`, then run this file.  You'll get a number of threads created so you can test.
 
 
+# Code Layout
+
+Right now there are two primary apps: `forum` and `homepage`.  They do what you would expect -- the `forum` app does everything related to the forums, including the email list.  The `homepage` app does both the homepage and the service area.  The service area is not fully complete yet.
+
+All HTML templates on the site extend from `homepage/templates/base_template.htm`.  Make any high-level changes there.  All Ajax (html snippets) templates extend from `homepage/templates/base_ajax_template.htm`.  You probably won't even need to modify the ajax one -- it is supposed to be simple.
+
+Correspondingly, the primary CSS document for the entire site is in `homepage/styles/base_template.css`.  We also customized Bootstrap's look and feel in the `homepage/styles/custom.css` file, which is included in every page.
+
+
 # Committing Your Changes
 
 Before working, always pull the most recent changes from GitHub: `git pull origin master`.
