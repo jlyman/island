@@ -47,9 +47,22 @@ For Windows users, you need to install Git on your machine (see https://windows.
 
 Create an empty directory, then download the code from https://github.com/doconix/island.  You don't need a password to download the code, but you won't be able to commit changes until you are granted rights (see Dr. Albrecht).
 
-## Initialize the Database
+## Create an Initial Database
 
-Run the `create_debugging_data.py` script located in `theCproject` folder. This will populate the database with the minimum amount of information needed to make the site fully functional.
+First, modify the database settings in `theCproject/settings.py` to match your setup.  You'll likely be changing things to "localhost" to hit your local PostgreSQL database.
+
+Next, create the database with `python3 manage.py migrate`.  If you set up your database correctly, you should get a number of tables created.  If it fails, check your database settings, your psycopg2 driver, and your Python installation.
+
+Finally, create some debugging data.  We created a simple script for this. Make any needed modifications (for your username) to `theCproject/create_debugging_data.py`, then run this file.  You'll get a number of threads created so you can test.
+
+
+# Code Layout
+
+Right now there are two primary apps: `forum` and `homepage`.  They do what you would expect -- the `forum` app does everything related to the forums, including the email list.  The `homepage` app does both the homepage and the service area.  The service area is not fully complete yet.
+
+All HTML templates on the site extend from `homepage/templates/base_template.htm`.  Make any high-level changes there.  All Ajax (html snippets) templates extend from `homepage/templates/base_ajax_template.htm`.  You probably won't even need to modify the ajax one -- it is supposed to be simple.
+
+Correspondingly, the primary CSS document for the entire site is in `homepage/styles/base_template.css`.  We also customized Bootstrap's look and feel in the `homepage/styles/custom.css` file, which is included in every page.
 
 # Committing Your Changes
 

@@ -47,6 +47,9 @@ class NotificationForm(forms.Form):
 
 #####################################################################
 ###   Unsubscription via links in emails
+###   The user is likely not logged in for this, so we don't
+###   use request.user anywhere, and we don't check permissions
+###   beyond the hash.
 
 @view_function
 def unsubscribe(request):
@@ -73,14 +76,14 @@ def unsubscribe(request):
       # get the topic the user wants to be unsubscribed from
       if not request.urlparams[3].strip():  # unsubscribe from all
         for topic in fmod.Topic.objects.order_by('sort_order'):
-          tn, created = fmod.TopicNotification.objects.get_or_create(user=request.user, topic=topic)
+          tn, created = fmod.TopicNotification.objects.get_or_create(user=user, topic=topic)
           tn.notification = 'none'
           tn.save()
       
       else: # unsubscribe from a single topic
         try:
           topic = fmod.Topic.objects.get(key=request.urlparams[3])
-          tn, created = fmod.TopicNotification.objects.get_or_create(user=request.user, topic=topic)
+          tn, created = fmod.TopicNotification.objects.get_or_create(user=user, topic=topic)
           tn.notification = 'none'
           tn.save()
         except (fmod.Topic.DoesNotExist, ValueError):

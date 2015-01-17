@@ -29,6 +29,30 @@ ALLOWED_HOSTS = [
 ]
 
 
+
+
+#####################################
+###   CAS Authentication at BYU
+
+AUTHENTICATION_BACKENDS = ( 
+    'django_cas_ng.backends.CASBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# after the django_cas_ng modules authenticates a user and creates a stub User object (if needed),
+# it sends the 'cas_user_authenticated' signal, which we handle in homepage/views/__init__.py
+# that's where we finalize the user information from the BYU cas system
+CAS_SERVER_URL = 'https://cas.byu.edu/cas/login'
+CAS_REDIRECT_URL = 'https://island.byu.edu/account/'
+CAS_VERSION = '3'
+# NOTE THAT when testing, BYU doesn't send the extended attributes (to localhost).  
+#CAS_SERVER_URL = 'https://cas.byu.edu/cas/login'
+#CAS_REDIRECT_URL = 'http://localhost:8000/account/'
+
+
+
+
+
 # Application definition
 
 DJANGO_APPS = (
@@ -181,11 +205,6 @@ STATICFILES_DIRS = (
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')  
 
 
-AUTHENTICATION_BACKENDS = ( 
-    'django_cas_ng.backends.CASBackend',
-    'django.contrib.auth.backends.ModelBackend',
-)
-
 
 ###################################
 ###   Email settings
@@ -195,18 +214,6 @@ EMAIL_PORT = 25
 
 #EMAIL_HOST = 'localhost'
 #EMAIL_PORT = 1025
-
-
-#####################################
-###   CAS Authentication at BYU
-
-CAS_SERVER_URL = 'https://cas.byu.edu/cas/login'
-CAS_REDIRECT_URL = 'https://island.byu.edu/account/'
-CAS_VERSION = '3'
-# NOTE THAT when testing, BYU doesn't send the extended attributes (to localhost).  
-#CAS_SERVER_URL = 'https://cas.byu.edu/cas/login'
-#CAS_REDIRECT_URL = 'http://localhost:8000/account/'
-
 
 
 #############################################################################################
