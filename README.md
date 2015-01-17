@@ -47,6 +47,16 @@ For Windows users, you need to install Git on your machine (see https://windows.
 
 Create an empty directory, then download the code from https://github.com/doconix/island.  You don't need a password to download the code, but you won't be able to commit changes until you are granted rights (see Dr. Albrecht).
 
+
+## Create an Initial Database
+
+First, modify the database settings in `theCproject/settings.py` to match your setup.  You'll likely be changing things to "localhost" to hit your local PostgreSQL database.
+
+Next, create the database with `python3 manage.py migrate`.  If you set up your database correctly, you should get a number of tables created.  If it fails, check your database settings, your psycopg2 driver, and your Python installation.
+
+Finally, create some debugging data.  We created a simple script for this. Make any needed modifications (for your username) to `theCproject/create_debugging_data.py`, then run this file.  You'll get a number of threads created so you can test.
+
+
 # Committing Your Changes
 
 Before working, always pull the most recent changes from GitHub: `git pull origin master`.
