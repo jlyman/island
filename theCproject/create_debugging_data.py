@@ -32,7 +32,7 @@ for info in [
   user.save()
 
 # ensure the main user (Conan or Thong) is a staff and superuser
-user = hmod.SiteUser.objects.get(email='ca@byu.edu')
+user = hmod.SiteUser.objects.get(email='doconix@gmail.com')
 user.is_staff = True
 user.is_superuser = True
 user.save()
