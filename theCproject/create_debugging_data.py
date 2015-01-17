@@ -21,15 +21,15 @@ from forum import models as fmod
 import random, datetime, sys
 
 # add a few test users
-# for info in [
-#   ( 'user1', 'doconix@gmail.com', 'Conan2 Albrecht' ),
-#   ( 'user2', 'conan_albrecht@byu.edu', 'Conan3 Albrecht'),
-# ]:
-#   user = hmod.SiteUser()
-#   user.username = info[0]
-#   user.email = info[1]
-#   user.fullname = info[2]
-#   user.save()
+for info in [
+  ( 'user1', 'doconix@gmail.com', 'Conan2 Albrecht' ),
+  ( 'user2', 'conan_albrecht@byu.edu', 'Conan3 Albrecht'),
+]:
+  user = hmod.SiteUser()
+  user.username = info[0]
+  user.email = info[1]
+  user.fullname = info[2]
+  user.save()
 
 # ensure the main user (Conan or Thong) is a staff and superuser
 user = hmod.SiteUser.objects.get(email='ca@byu.edu')

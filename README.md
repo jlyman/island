@@ -47,6 +47,10 @@ For Windows users, you need to install Git on your machine (see https://windows.
 
 Create an empty directory, then download the code from https://github.com/doconix/island.  You don't need a password to download the code, but you won't be able to commit changes until you are granted rights (see Dr. Albrecht).
 
+## Initialize the Database
+
+Run the `create_debugging_data.py` script located in `theCproject` folder. This will populate the database with the minimum amount of information needed to make the site fully functional.
+
 # Committing Your Changes
 
 Before working, always pull the most recent changes from GitHub: `git pull origin master`.
