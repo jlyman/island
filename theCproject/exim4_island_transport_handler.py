@@ -57,7 +57,7 @@ try:
 
   # get the user object for this sender
   user = hmod.SiteUser.objects.filter(email__iexact=sender).first()
-  assert user != None, 'Error: the email %s is not authenticated to post to this system. Please check your account settings on Island.' % sender
+  assert user != None, 'Error: the email %s is not authenticated to post to this system. It must match whatever email is registered on the main BYU system.  Once you set your email with BYU, logout and re-login to island.byu.edu to update your information here.  This usually fixes any email issues.' % sender
 
   # get the topic object
   topic = fmod.Topic.objects.filter(key__iexact=topic_key).first()
