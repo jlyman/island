@@ -46,9 +46,6 @@
         </div><!-- comment_container_left_top -->
         
         <div class="comment_container_left_bottom">
-          <a href="https://en.gravatar.com/">
-            <img src="${'http://www.gravatar.com/avatar/' + hashlib.md5(request.user.email.lower().encode('utf-8')).hexdigest()}" height="60x"/>
-          </a>
           <div>Joined: ${ comment.user.date_joined.strftime('%b %Y') }</div>
           <div>Points: ${ comment.user.total_points }</div>
         </div><!-- comment_container_left_bottom -->
