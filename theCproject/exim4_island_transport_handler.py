@@ -55,6 +55,12 @@ try:
   title = msg['subject']
   assert title, "Error: Could not parse the title of your new thread."
 
+  # check whether it's a bounce
+  # right now we're just ignoring these, but we should disable bad emails after a few bounces come in.
+  if topic_key.lower() == 'bounce':
+    log.warning('Warning: Ignoring bounce on email: %s' % sender)
+    sys.exit(0)
+
   # get the user object for this sender
   user = hmod.SiteUser.objects.filter(email__iexact=sender).first()
   assert user != None, 'Error: the email %s is not authenticated to post to this system. It must match whatever email is registered on the main BYU system.  Once you set your email with BYU, logout and re-login to island.byu.edu to update your information here.  This usually fixes any email issues.' % sender

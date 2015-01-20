@@ -134,9 +134,13 @@ def send_comment_email_immediate(request, comment):
   '''Sends email out for a given comment'''
   thread = comment.thread
   
-  # create the unique message id
+  # create the unique message id, and add headers
   headers = {}
   headers['Message-ID'] = '<c%i_%s@island.byu.edu>' % (comment.id, thread.get_hash().hexdigest())  # if we change this, we need to change the regex above
+  headers['Reply-To'] = '%s@island.byu.edu' % thread.topic.key
+  headers['List-Id'] = '<%s.island.byu.edu>' % thread.topic.key
+  headers['List-Help'] = '<https://island.byu.edu/forum/index/help/>'
+  headers['List-Post'] = headers['Reply-To']
   subject = thread.title
   
   # reference it to the first comment in the thread.  Some email clients use References, some use In-Reply-To

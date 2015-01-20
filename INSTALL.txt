@@ -1,0 +1,14 @@
+Installation notes:
+
+
+==================================================================================================
+
+Exim4 needs some custom configuration:
+ 1. Modify conf.d/transport/10_exim4-config_transport-macros to have a hard-coded return path:
+     REMOTE_SMTP_RETURN_PATH=bounce@island.byu.edu
+	 
+ 2. Add the exim4_island_router file to the /etc/exim4/conf.d/router directory.
+ 
+ 3. Add the exim4_island_transport file to the /etc/exim4/conf.d/transport directory.
+ 
+==================================================================================================
