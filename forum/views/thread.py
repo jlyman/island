@@ -160,14 +160,15 @@ def send_comment_email_immediate(request, comment):
         SELECT * 
         FROM forum_topicnotification AS tn 
         WHERE tn.user_id=u.id 
-          AND tn.topic_id=%s 
+          AND tn.topic_id=%s
           AND tn.notification='immediate'
     ) OR NOT EXISTS (
         SELECT notification 
         FROM forum_topicnotification AS tn2 
         WHERE tn2.user_id=u.id 
           AND tn2.topic_id=%s
-    )""", (thread.topic.id, thread.topic.id)):
+    )
+  """, (thread.topic.id, thread.topic.id)):
     # create a unique unsubscribe hash for this thread and user - this prevents hackers from unsubscribing people without the link
     m = thread.get_hash()
     m.update((user.email or 'defaultemail').encode('utf8'))  # add some user info to it
