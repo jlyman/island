@@ -146,9 +146,28 @@ def send_comment_email_immediate(request, comment):
     headers['References'] = '<c%i_%s@island.byu.edu>' % (first_comment.id, thread.get_hash().hexdigest())
     headers['In-Reply-To'] = headers['References']
     
-  # we pull anyone without a TN object or those with explicit "immediate" for this topoic
+  # I'm doing this with SQL because I don't know how to make Django do it with the either-or situation
+  # It's also more explicit this way so we know exactly who will be getting emails
+  # Here's who gets emails here:
+  #   1. Users with a TopicNotification record for the thread.topic set to 'immediate'.
+  #   2. Users without a Topic Notification record for the thread.topic - i.e. NOT EXISTS.
+  #
   params_list = []
-  for user in hmod.SiteUser.objects.filter(Q(topicnotification__isnull=True) | Q(topicnotification__topic=thread.topic, topicnotification__notification='immediate')):
+  for user in hmod.SiteUser.objects.raw("""
+    SELECT u.* 
+    FROM homepage_siteuser AS u 
+    WHERE EXISTS (
+        SELECT * 
+        FROM forum_topicnotification AS tn 
+        WHERE tn.user_id=u.id 
+          AND tn.topic_id=%s 
+          AND tn.notification='immediate'
+    ) OR NOT EXISTS (
+        SELECT notification 
+        FROM forum_topicnotification AS tn2 
+        WHERE tn2.user_id=u.id 
+          AND tn2.topic_id=%s
+    )""", (thread.topic.id, thread.topic.id)):
     # create a unique unsubscribe hash for this thread and user - this prevents hackers from unsubscribing people without the link
     m = thread.get_hash()
     m.update((user.email or 'defaultemail').encode('utf8'))  # add some user info to it
