@@ -173,6 +173,10 @@ def send_comment_email_immediate(request, comment):
           AND tn2.topic_id=%s
     )
   """, (thread.topic.id, thread.topic.id)):
+    # if we don't have an email for this user, skip it
+    if not user.email:
+      continue
+  
     # create a unique unsubscribe hash for this thread and user - this prevents hackers from unsubscribing people without the link
     m = thread.get_hash()
     m.update((user.email or 'defaultemail').encode('utf8'))  # add some user info to it
