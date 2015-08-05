@@ -1,0 +1,54 @@
+## this is the skeleton of all pages on in this app - it defines the basic html tags
+
+## set up a StaticRenderer object to enable the CSS/JS automatic inclusion magic.
+<%! from django_mako_plus.controller import static_files %>
+<%! from forum import models as fmod %>
+<%! import urllib, hashlib %>
+<%  static_renderer = static_files.StaticRenderer(self) %>
+
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8">
+  <head>
+    
+    <title><%block name="page_title">Island</%block></title>
+    
+    ## js file for every page of the site
+    <script src="/static/homepage/scripts/jQuery.js"></script>
+    <script src="/static/homepage/scripts/bootstrap.js"></script>
+    ## css files for every page of the site
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/homepage/styles/bootstrap-theme.css">
+    
+    ## render the css with the same name as this page
+    ${ static_renderer.get_template_css(request, context)  }
+  
+  </head>
+  <body>
+    
+    <header>
+      <%block name="main_header_content">
+      <ul class="tab-bar">
+          <li>First</li>
+          <li>Second</li>
+          <li>Third</li>
+          <li>Fourth</li>
+      </ul>
+      
+      </%block>
+    </header>
+    
+    <main>
+      This is the center area
+    </main>
+  
+    <footer>
+      <%block name="main_footer_content">
+      </%block>
+    </footer>
+  
+    ## render the JS with the same name as this page
+    ${ static_renderer.get_template_js(request, context)  }
+  
+  </body>
+</html>
