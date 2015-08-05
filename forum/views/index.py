@@ -7,7 +7,7 @@ from lib.filters import *
 from forum import models as fmod
 from . import templater, prepare_params
 from lib.tables import TableHeader, ServerSideTable
-
+from django.contrib.auth.decorators import permission_required
 
 COMMENTS_PER_PAGE = 20
 

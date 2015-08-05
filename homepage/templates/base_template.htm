@@ -4,6 +4,7 @@
 <%! from django_mako_plus.controller import static_files %>
 <%! from forum import models as fmod %>
 <%! import urllib, hashlib %>
+<%! import datetime %>
 <%  static_renderer = static_files.StaticRenderer(self) %>
 
 <!DOCTYPE html>
@@ -78,7 +79,10 @@
 
       <div id="footer">
         <div class="container">
-          <p class="text-muted">BYU Department of Information Systems</p>
+          <p class="text-muted">BYU Department of Information Systems
+          |
+          Copyright &copy; ${ datetime.datetime.now().strftime("%Y") }
+          </p>
         </div>
       </div>
     </div>
@@ -100,18 +104,22 @@
       %endif
       <div style="background-color: #3E454D; border-top: 1px solid #ffffff;">
         <br/>
-        <ul class="nav nav-sidebar">
-          <li class="nav-title"><a href="/forum/index/Jobs/">Job Postings</a></li>
-          %for thread in latest_jobs[:3]:
-            <li><a href="/forum/thread/${ thread.id }/"><div class="icon ${ thread.topic.icon } icon_color_white"></div>&nbsp; ${ thread.title | h }</a></li>
-          %endfor
-        </ul>
-        <ul class="nav nav-sidebar">
-          <li class="nav-title"><a href="/forum/index/">Latest Threads</a></li>
-          %for thread in latest_threads[:5]:
-            <li><a href="/forum/thread/${ thread.id }/"><div class="icon ${ thread.topic.icon } icon_color_white"></div>&nbsp; ${ thread.title | h }</a></li>
-          %endfor
-        </ul>
+        %if latest_jobs:
+          <ul class="nav nav-sidebar">
+            <li class="nav-title"><a href="/forum/index/Jobs/">Job Postings</a></li>
+            %for thread in latest_jobs[:3]:
+              <li><a href="/forum/thread/${ thread.id }/"><div class="icon ${ thread.topic.icon } icon_color_white"></div>&nbsp; ${ thread.title | h }</a></li>
+            %endfor
+          </ul>
+        %endif
+        %if latest_threads:
+          <ul class="nav nav-sidebar">
+            <li class="nav-title"><a href="/forum/index/">Latest Threads</a></li>
+            %for thread in latest_threads[:5]:
+              <li><a href="/forum/thread/${ thread.id }/"><div class="icon ${ thread.topic.icon } icon_color_white"></div>&nbsp; ${ thread.title | h }</a></li>
+            %endfor
+          </ul>
+        %endif
       </div>
 
       <div class="classysocial"  style="position:absolute; bottom: 0px; left: 10%;"
@@ -126,6 +134,10 @@
   
     ## render the JS with the same name as this page
     ${ static_renderer.get_template_js(request, context)  }
+    
+    <script>
+      console.log(i);
+    </script>
   
   </body>
 </html>

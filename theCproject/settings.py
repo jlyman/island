@@ -30,7 +30,6 @@ ALLOWED_HOSTS = [
 
 
 
-
 #####################################
 ###   CAS Authentication at BYU
 
@@ -48,8 +47,6 @@ CAS_VERSION = '3'
 # NOTE THAT when testing, BYU doesn't send the extended attributes (to localhost).  
 #CAS_SERVER_URL = 'https://cas.byu.edu/cas/login'
 #CAS_REDIRECT_URL = 'http://localhost:8000/account/'
-
-
 
 
 
