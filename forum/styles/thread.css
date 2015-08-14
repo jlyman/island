@@ -78,16 +78,23 @@ h1 .icon {
   position: relative;
 }
 
-
 .comment_container_left_bottom {
   color: #888;
+}
+
+.comment_container_left_bottom_avatar {
+  float: left;
+}
+
+.comment_container_left_bottom_userinfo {
+  float: right;
 }
 
 .comment_container_left_top {
   background-color: #E4E4E4;
   border-radius: 4px 0 0 0;
   border-bottom: 1px solid #CCC;
-} 
+}
 
 .comment_container_center_top {
   background-color: #E4E4E4;

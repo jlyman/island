@@ -91,7 +91,7 @@
       %if request.user.is_authenticated():
         <header style="height: 115px;">
             <a href="https://en.gravatar.com/">
-              <img src="${'http://www.gravatar.com/avatar/' + hashlib.md5(request.user.email.lower().encode('utf-8')).hexdigest()}" height="40px"/>
+              <img src="${'http://www.gravatar.com/avatar/' + hashlib.md5(request.user.email.lower().encode('utf-8')).hexdigest()}" height="60px"/>
             </a>
             <div class="btn btn-default" style="text-align: left; cursor: initial;">
               ${request.user.username}
