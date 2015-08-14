@@ -106,7 +106,7 @@
         <br/>
         %if latest_jobs:
           <ul class="nav nav-sidebar">
-            <li class="nav-title"><a href="/forum/index/Jobs/">Job Postings</a></li>
+            <li class="nav-title"><a href="/forum/index/jobs/">Job Postings</a></li>
             %for thread in latest_jobs[:3]:
               <li><a href="/forum/thread/${ thread.id }/"><div class="icon ${ thread.topic.icon } icon_color_white"></div>&nbsp; ${ thread.title | h }</a></li>
             %endfor
