@@ -1,17 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-from django.contrib.auth.models import AbstractUser     
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from lib.filters import *
 
 #####################################################################
 ###   User models
 
+
+
+
 class Level(models.Model):
   name = models.TextField(blank=False, null=False)
   description = models.TextField(blank=True, null=True)
-  points_required = models.IntegerField(max_length=200, blank=False, null=False)
+  points_required = models.IntegerField(blank=False, null=False)
 
   def __str__(self):
     return '%s: %s' % (self.id, self.name)
@@ -31,10 +34,10 @@ class SiteUser(AbstractUser):
   fullname = models.TextField(blank=True, null=True)
   phone = models.TextField(blank=True, null=True)
   byu_status = models.TextField(blank=True, null=True)
-  total_points = models.IntegerField(max_length=200, blank=True, null=True, default=0)
+  total_points = models.IntegerField(blank=True, null=True, default=0)
 
   def __str__(self):
-    return '%s: %s' % (self.id, self.fullname)
+    return '%s: %s' % (self.id, self.get_full_name())
 
 
   def get_full_name(self):
@@ -53,8 +56,8 @@ class Task(models.Model):
   url = models.TextField(blank=True, null=True)
   description = models.TextField(blank=True, null=True)
   image = models.TextField(blank=True, null=True)
-  importance = models.IntegerField(max_length=200, blank=True, null=True)
-  points = models.IntegerField(max_length=200, blank=True, null=True)
+  importance = models.IntegerField(blank=True, null=True)
+  points = models.IntegerField(blank=True, null=True)
   repeatable = models.NullBooleanField()
 
   def __str__(self):
@@ -63,7 +66,7 @@ class Task(models.Model):
 
 class TaskStep(models.Model):
   task = models.ForeignKey(Task)
-  sort_order = models.IntegerField(max_length=200, blank=True, null=True)
+  sort_order = models.IntegerField(blank=True, null=True)
   description = models.TextField(blank=True, null=True)
   def __str__(self):
     return '%s: %s, step %s' % (self.id, self.name, self.sort_order)
@@ -74,9 +77,9 @@ class TaskTicket(models.Model):
   task = models.ForeignKey(Task)
   start_time = models.DateTimeField(auto_now_add=True)
   end_time = models.DateTimeField(blank=True, null=True)
-  rating = models.IntegerField(max_length=200, blank=True, null=True)
+  rating = models.IntegerField(blank=True, null=True)
   comment = models.TextField(blank=True, null=True)
-  points = models.IntegerField(max_length=200, blank=True, null=True)
+  points = models.IntegerField(blank=True, null=True)
 
   def __str__(self):
     return '%s: %s' % (self.id)
@@ -95,7 +98,7 @@ class UploadedFile(models.Model):
   created = models.DateTimeField(blank=True, null=True, auto_now_add=True)
   filename = models.TextField(blank=True, null=True)
   contenttype = models.TextField(blank=True, null=True)
-  size = models.IntegerField()
+  size = models.IntegerField(blank=True, null=True)
   filebytes = models.BinaryField(blank=True, null=True)
   
   def __str__(self):

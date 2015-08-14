@@ -1,0 +1,51 @@
+header {
+  background-color: green;
+  min-height: 100px;
+  display: block;
+}
+
+ul.tab-bar > li {
+/*  background-color: red;*/
+  display: inline-block;
+}
+
+main {
+/*  background-color: red;*/
+  min-height: 200px;
+  display: block;
+  position: relative;
+}
+
+#main_left_content {
+  background-color: blue;
+/*  min-width: 50px;*/
+  width: 20%;
+  display: block;
+  float: left;
+  
+}
+
+#main_center_content {
+/*  background-color: orange;*/
+  min-height: 200px;
+  display: block;
+  float: left;
+  width: 60%;
+/*  overflow: scroll;*/
+  word-wrap: break-word;
+}
+
+#main_right_content {
+  background-color: purple;
+  min-height: 200px;
+  display: block;
+/*  float: left;*/
+  width: 20%;
+}
+
+
+footer {
+  background-color: yellow;
+  min-height: 100px;
+  display: block;
+}

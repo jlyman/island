@@ -1,5 +1,14 @@
 Installation notes:
 
+pip3 install django
+pip3 install django-mako-plus
+pip3 install mako
+pip3 install psycopg2    # this can be easier on linux with "aptitude install python3-psycopg2"
+pip3 install rjsmin
+pip3 install rcssmin
+pip3 install jsonfield
+pip3 install shortuuid
+
 
 ==================================================================================================
 

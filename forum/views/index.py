@@ -7,7 +7,7 @@ from lib.filters import *
 from forum import models as fmod
 from . import templater, prepare_params
 from lib.tables import TableHeader, ServerSideTable
-
+from django.contrib.auth.decorators import permission_required
 
 COMMENTS_PER_PAGE = 20
 
@@ -47,7 +47,7 @@ def get_table(request, as_response=True):
   
   # query the threads and prepare the table
   table = ThreadTable(request)
-  table.endpoint_url = '/forum/index.get_table/%s' % topic.key if topic else ''
+  table.endpoint_url = '/forum/index.get_table/%s' % (topic.key if topic else '')
   threads_query = fmod.Thread.objects.order_by('-created')
   if topic:
     threads_query = threads_query.filter(topic=topic)
