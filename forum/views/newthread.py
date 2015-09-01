@@ -61,7 +61,7 @@ class ThreadForm(forms.Form):
         self.initial['topic'] = topic.id
     self.fields['topic'] = forms.ChoiceField(label="Topic:", required=True, choices=choices, widget=lib.widgets.ButtonChoiceWidget())
     if not self.initial.get('topic'):
-      self.initial['topic'] = choices[0][0]
+      self.initial['topic'] = choices[2][0]
       
   def clean_file1(self):
     if self.cleaned_data['file1']:
